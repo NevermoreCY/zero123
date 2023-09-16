@@ -754,9 +754,12 @@ class LatentDiffusion(DDPM):
 
         # get text embedding , merge text embedding with camera position
         xc_txt = batch['txt']
+
         with torch.enable_grad():
             clip_txt = self.get_learned_conditioning(xc_txt)
             T = T[:, None, :].repeat(1, 77, 1)
+            print("*** clip txt" , clip_txt.shape)
+            print("*** T ", T.shape)
             clip_camera_txt = torch.concat([clip_txt,T], dim=-1)
 
             c = self.cc_projection(clip_camera_txt)
