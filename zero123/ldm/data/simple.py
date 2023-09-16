@@ -204,6 +204,17 @@ class ObjaverseDataModuleFromConfig(pl.LightningDataModule):
         return wds.WebLoader(ObjaverseData(root_dir=self.root_dir, total_view=self.total_view, validation=self.validation),\
                           batch_size=self.batch_size, num_workers=self.num_workers, shuffle=False)
 
+def random_canny(image):
+    # compute the median of the single channel pixel intensities
+    # apply automatic Canny edge detection using the computed media
+
+    lower = 10 + np.random.random() * 90 # lower 0 ~ 100
+    upper = 150 + np.random.random()*100 # upper 150 ~ 250
+
+    edged = cv2.Canny(image, lower, upper)
+
+    # return the edged image
+    return edged
 
 class ObjaverseData(Dataset):
     def __init__(self,
@@ -300,9 +311,20 @@ class ObjaverseData(Dataset):
 
         try:
             target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
-            cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
+            # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
             target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
             cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
+            # get canny
+            cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
+            cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
+            # get canny edge
+            canny_r = random_canny(cond_im)
+            # normalize
+            canny_r = canny_r.astype(np.float32) / 255.0
+            # get text
+            f = open(os.path.join(filename, "BLIP_best_text.txt") , 'r')
+            prompt = f.readline()
+
         except:
             # very hacky solution, sorry about this
             filename = os.path.join(self.root_dir, '692db5f2d3a04bb286cb977a7dba903e_1') # this one we know is valid
@@ -311,11 +333,16 @@ class ObjaverseData(Dataset):
             target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
             cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
             target_im = torch.zeros_like(target_im)
-            cond_im = torch.zeros_like(cond_im)
+            canny_r = torch.zeros_like(cond_im)
+            prompt = ""
 
         data["image_target"] = target_im
-        data["image_cond"] = cond_im
+        data["image_cond"] = canny_r
         data["T"] = self.get_T(target_RT, cond_RT)
+        data["txt"] = prompt
+
+        print("target_im type : ", type(target_im), " , shape is : " ,target_im.shape)
+        print("canny_r type : ", type(canny_r), " , shape is : ",canny_r.shape)
 
         if self.postprocess is not None:
             data = self.postprocess(data)
