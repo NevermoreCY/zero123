@@ -768,7 +768,7 @@ class LatentDiffusion(DDPM):
         control = einops.rearrange(control, 'b h w c -> b c h w')
         control = control.to(memory_format=torch.contiguous_format).float()
 
-        control_encode = self.encode_first_stage()
+        control_encode = self.encode_first_stage(control)
         print("*** control shape after encode:" ,control_encode.shape)
 
 
