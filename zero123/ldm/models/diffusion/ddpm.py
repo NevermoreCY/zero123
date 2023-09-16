@@ -923,6 +923,7 @@ class LatentDiffusion(DDPM):
             cond = {key: cond}
 
         if hasattr(self, "split_input_params"):
+            print("*** our model has attribute of : split_input_params")
             assert len(cond) == 1  # todo can only deal with one conditioning atm
             assert not return_ids
             ks = self.split_input_params["ks"]  # eg. (128, 128)
@@ -1002,6 +1003,7 @@ class LatentDiffusion(DDPM):
             x_recon = fold(o) / normalization
 
         else:
+            print("*** our model doesn't have attribute of : split_input_params")
             x_recon = self.model(x_noisy, t, **cond)
 
         if isinstance(x_recon, tuple) and not return_ids:
@@ -1480,9 +1482,13 @@ class DiffusionWrapper(pl.LightningModule):
         elif self.conditioning_key == 'crossattn':
             # c_crossattn dimension:  torch.Size([8, 1, 768]) 1
             # cc dimension:  torch.Size([8, 1, 768]
+
             cc = torch.cat(c_crossattn, 1)
             out = self.diffusion_model(x, t, context=cc)
         elif self.conditioning_key == 'hybrid':
+            print("*** x dimenstion: ", x.shape)
+            print("*** c_concat shape: ", c_concat.shape)
+            print("*** c_crossattn dimenstion", c_crossattn.shape)
             xc = torch.cat([x] + c_concat, dim=1)
             cc = torch.cat(c_crossattn, 1)
             out = self.diffusion_model(xc, t, context=cc)
