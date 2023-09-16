@@ -736,7 +736,8 @@ class LatentDiffusion(DDPM):
         encoder_posterior = self.encode_first_stage(x)
         z = self.get_first_stage_encoding(encoder_posterior).detach()
 
-        print("*** z shape after encode:", z.shape)
+        # print("*** z shape after encode:", z.shape)
+        # [192, 4, 32, 32])
 
 
         # cond_key = cond_key or self.cond_stage_key
@@ -773,12 +774,13 @@ class LatentDiffusion(DDPM):
 
         control_encode = self.encode_first_stage(control)
         control_encode = self.get_first_stage_encoding(control_encode).detach()
-        print("*** control shape after encode:" ,control_encode.shape)
+        # print("*** control shape after encode:" ,control_encode.shape)
+        # [192, 4, 32, 32])
 
 
         cond = {}
         cond["c_crossattn"] = [c]
-        cond["c_concat"] = [control]
+        cond["c_concat"] = [control_encode]
         # z.shape: [8, 4, 64, 64]; c.shape: [8, 1, 768]
         # print('=========== xc shape ===========', xc.shape)
 
