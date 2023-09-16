@@ -794,13 +794,17 @@ class LatentDiffusion(DDPM):
         out = [z, cond]
 
 
+        # z, c, x, xrec, xc = self.get_input(batch, self.first_stage_key,
+        #                                    return_first_stage_outputs=True,
+        #                                    force_c_encode=True,
+        #                                    return_original_cond=True,
+        #                                    bs=N)
 
-
-        # if return_first_stage_outputs:
-        #     xrec = self.decode_first_stage(z)
-        #     out.extend([x, xrec])
-        # if return_original_cond:
-        #     out.append(xc)
+        if return_first_stage_outputs:
+            xrec = self.decode_first_stage(z)
+            out.extend([x, xrec])
+        if return_original_cond:
+            out.append(control)
         return out
 
     # @torch.no_grad()
