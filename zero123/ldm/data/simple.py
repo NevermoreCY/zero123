@@ -308,34 +308,48 @@ class ObjaverseData(Dataset):
             data["path"] = str(filename)
         
         color = [1., 1., 1., 1.]
-
-        try:
-            print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
-            target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
-            # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
-            target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
-            cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
-            # get canny
-            cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
-            cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
-            # get canny edge
-            canny_r = random_canny(cond_im)
-            # normalize
-            canny_r = canny_r.astype(np.float32) / 255.0
-            # get text
-            f = open(os.path.join(filename, "BLIP_best_text.txt") , 'r')
-            prompt = f.readline()
-
-        except:
-            # very hacky solution, sorry about this
-            filename = os.path.join(self.root_dir, '692db5f2d3a04bb286cb977a7dba903e_1') # this one we know is valid
-            target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
-            cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
-            target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
-            cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
-            target_im = torch.zeros_like(target_im)
-            canny_r = torch.zeros_like(cond_im)
-            prompt = ""
+        print("first trying file ", os.path.join(filename, '%03d.png' % index_target))
+        target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
+        # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
+        target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
+        cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
+        # get canny
+        cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
+        cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
+        # get canny edge
+        canny_r = random_canny(cond_im)
+        # normalize
+        canny_r = canny_r.astype(np.float32) / 255.0
+        # get text
+        f = open(os.path.join(filename, "BLIP_best_text.txt"), 'r')
+        prompt = f.readline()
+        # try:
+        #     print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
+        #     target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
+        #     # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
+        #     target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
+        #     cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
+        #     # get canny
+        #     cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
+        #     cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
+        #     # get canny edge
+        #     canny_r = random_canny(cond_im)
+        #     # normalize
+        #     canny_r = canny_r.astype(np.float32) / 255.0
+        #     # get text
+        #     f = open(os.path.join(filename, "BLIP_best_text.txt") , 'r')
+        #     prompt = f.readline()
+        #
+        # except:
+        #     # very hacky solution, sorry about this
+        #     filename = os.path.join(self.root_dir, '692db5f2d3a04bb286cb977a7dba903e_1') # this one we know is valid
+        #     target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
+        #     cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
+        #     target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
+        #     cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
+        #     target_im = torch.zeros_like(target_im)
+        #     canny_r = torch.zeros_like(cond_im)
+        #     prompt = ""
 
         data["image_target"] = target_im
         data["image_cond"] = canny_r
