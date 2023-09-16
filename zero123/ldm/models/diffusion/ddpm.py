@@ -731,6 +731,7 @@ class LatentDiffusion(DDPM):
             T = T[:bs].to(self.device)
 
         x = x.to(self.device)
+        print("*** x shape before encode", x.shape)
         encoder_posterior = self.encode_first_stage(x)
         z = self.get_first_stage_encoding(encoder_posterior).detach()
 
@@ -766,6 +767,10 @@ class LatentDiffusion(DDPM):
         control = control.to(self.device)
         control = einops.rearrange(control, 'b h w c -> b c h w')
         control = control.to(memory_format=torch.contiguous_format).float()
+
+        control_encode = self.encode_first_stage()
+        print("*** control shape after encode:" ,control_encode.shape)
+
 
         cond = {}
         cond["c_crossattn"] = [c]
