@@ -310,6 +310,7 @@ class ObjaverseData(Dataset):
         color = [1., 1., 1., 1.]
 
         try:
+            print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
             target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
             # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
             target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
