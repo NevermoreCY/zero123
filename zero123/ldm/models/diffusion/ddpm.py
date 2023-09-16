@@ -6,6 +6,7 @@ https://github.com/CompVis/taming-transformers
 -- merci
 """
 
+import einops
 import torch
 import torch.nn as nn
 import numpy as np
@@ -732,31 +733,56 @@ class LatentDiffusion(DDPM):
         x = x.to(self.device)
         encoder_posterior = self.encode_first_stage(x)
         z = self.get_first_stage_encoding(encoder_posterior).detach()
-        cond_key = cond_key or self.cond_stage_key
-        xc = super().get_input(batch, cond_key).to(self.device)
-        if bs is not None:
-            xc = xc[:bs]
-        cond = {}
+
+
+        # cond_key = cond_key or self.cond_stage_key
+        # xc = super().get_input(batch, cond_key).to(self.device)
+        # if bs is not None:
+        #     xc = xc[:bs]
+        # cond = {}
 
         # To support classifier-free guidance, randomly drop out only text conditioning 5%, only image conditioning 5%, and both 5%.
-        random = torch.rand(x.size(0), device=x.device)
-        prompt_mask = rearrange(random < 2 * uncond, "n -> n 1 1")
-        input_mask = 1 - rearrange((random >= uncond).float() * (random < 3 * uncond).float(), "n -> n 1 1 1")
-        null_prompt = self.get_learned_conditioning([""])
+        # random = torch.rand(x.size(0), device=x.device)
+        # prompt_mask = rearrange(random < 2 * uncond, "n -> n 1 1")
+        # input_mask = 1 - rearrange((random >= uncond).float() * (random < 3 * uncond).float(), "n -> n 1 1 1")
+        # null_prompt = self.get_learned_conditioning([""])
 
+        # get text embedding , merge text embedding with camera position
+        xc_txt = batch['txt']
+        with torch.enable_grad():
+            clip_txt = self.get_learned_conditioning(xc_txt)
+            T = T[:, None, :].repeat(1, 77, 1)
+            clip_camera_txt = torch.concat([clip_txt,T], dim=-1)
+
+            c = self.cc_projection(clip_camera_txt)
+        if bs is not None:
+            c = c[:bs]
+
+
+        # add control
+        control = batch["image_cond"]
+        if bs is not None:
+            control = control[:bs]
+        control = control.to(self.device)
+        control = einops.rearrange(control, 'b h w c -> b c h w')
+        control = control.to(memory_format=torch.contiguous_format).float()
+
+        cond = {}
+        cond["c_crossattn"] = [c]
+        cond["c_concat"] = [control]
         # z.shape: [8, 4, 64, 64]; c.shape: [8, 1, 768]
         # print('=========== xc shape ===========', xc.shape)
-        with torch.enable_grad():
-            clip_emb = self.get_learned_conditioning(xc).detach()
-            null_prompt = self.get_learned_conditioning([""]).detach()
-            cond["c_crossattn"] = [self.cc_projection(torch.cat([torch.where(prompt_mask, null_prompt, clip_emb), T[:, None, :]], dim=-1))]
-        cond["c_concat"] = [input_mask * self.encode_first_stage((xc.to(self.device))).mode().detach()]
+
         out = [z, cond]
-        if return_first_stage_outputs:
-            xrec = self.decode_first_stage(z)
-            out.extend([x, xrec])
-        if return_original_cond:
-            out.append(xc)
+
+
+
+
+        # if return_first_stage_outputs:
+        #     xrec = self.decode_first_stage(z)
+        #     out.extend([x, xrec])
+        # if return_original_cond:
+        #     out.append(xc)
         return out
 
     # @torch.no_grad()
