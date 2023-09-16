@@ -731,9 +731,12 @@ class LatentDiffusion(DDPM):
             T = T[:bs].to(self.device)
 
         x = x.to(self.device)
-        print("*** x shape before encode", x.shape)
+        #print("*** x shape before encode", x.shape)
+        # [192 , 3 ,256,256]
         encoder_posterior = self.encode_first_stage(x)
         z = self.get_first_stage_encoding(encoder_posterior).detach()
+
+        print("*** z shape after encode:", z.shape)
 
 
         # cond_key = cond_key or self.cond_stage_key
@@ -769,6 +772,7 @@ class LatentDiffusion(DDPM):
         control = control.to(memory_format=torch.contiguous_format).float()
 
         control_encode = self.encode_first_stage(control)
+        control_encode = self.get_first_stage_encoding(control_encode).detach()
         print("*** control shape after encode:" ,control_encode.shape)
 
 
