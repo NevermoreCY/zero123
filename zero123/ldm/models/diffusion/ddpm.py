@@ -1508,9 +1508,13 @@ class DiffusionWrapper(pl.LightningModule):
             cc = torch.cat(c_crossattn, 1)
             out = self.diffusion_model(x, t, context=cc)
         elif self.conditioning_key == 'hybrid':
-            print("*** x dimenstion: ", x.shape)
-            print("*** c_concat shape: ", c_concat[0].shape)
-            print("*** c_crossattn dimenstion", c_crossattn[0].shape)
+            # print("*** x dimenstion: ", x.shape)
+            # print("*** c_concat shape: ", c_concat[0].shape)
+            # print("*** c_crossattn dimenstion", c_crossattn[0].shape)
+            #  torch.Size([64, 4, 32, 32])
+            #  torch.Size([64, 4, 32, 32])
+            # torch.Size([64, 77, 768])
+
             xc = torch.cat([x] + c_concat, dim=1)
             cc = torch.cat(c_crossattn, 1)
             out = self.diffusion_model(xc, t, context=cc)
