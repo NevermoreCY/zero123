@@ -725,7 +725,7 @@ class LatentDiffusion(DDPM):
                   cond_key=None, return_original_cond=False, bs=None, uncond=0.05):
         x = super().get_input(batch, k)
         T = batch['T'].to(memory_format=torch.contiguous_format).float()
-        
+        print("*** bs is ", bs)
         if bs is not None:
             x = x[:bs]
             T = T[:bs].to(self.device)
