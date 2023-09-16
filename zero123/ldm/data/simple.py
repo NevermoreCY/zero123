@@ -326,7 +326,8 @@ class ObjaverseData(Dataset):
             # normalize
             canny_r = canny_r.astype(np.float32) / 255.0
             #
-            # tensor1 = tf.convert_to_tensor(numpy_array)
+            canny_r = torch.tensor(canny_r)
+
             # get text
             f = open(os.path.join(filename, "BLIP_best_text.txt") , 'r')
             prompt = f.readline()
