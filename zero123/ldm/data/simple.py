@@ -310,7 +310,7 @@ class ObjaverseData(Dataset):
         color = [1., 1., 1., 1.]
 
         try:
-            print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
+            # print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
             target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
             # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
             target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
@@ -348,8 +348,8 @@ class ObjaverseData(Dataset):
         data["T"] = self.get_T(target_RT, cond_RT)
         data["txt"] = prompt
 
-        print("target_im type : ", type(target_im), " , shape is : " ,target_im.shape)
-        print("canny_r type : ", type(canny_r), " , shape is : ",canny_r.shape)
+        # print("target_im type : ", type(target_im), " , shape is : " ,target_im.shape)
+        # print("canny_r type : ", type(canny_r), " , shape is : ",canny_r.shape)
 
         if self.postprocess is not None:
             data = self.postprocess(data)
