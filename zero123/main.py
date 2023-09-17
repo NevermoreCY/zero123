@@ -852,8 +852,12 @@ if __name__ == "__main__":
             from pytorch_lightning.trainer.connectors.checkpoint_connector import CheckpointConnector
             setattr(CheckpointConnector, "hpc_resume_path", None)
 
+        # save ckpt every n steps:
+        checkpoint_callback = ModelCheckpoint( filename='{epoch}-{step}--{val_loss:.2f}', every_n_train_steps=20)
+
+
         print("*** trainer opt " , trainer_opt)
-        print("*** trainer kwargs " , **trainer_kwargs)
+        print("*** trainer kwargs " , trainer_kwargs)
 
         trainer = Trainer.from_argparse_args(trainer_opt, **trainer_kwargs)
         trainer.logdir = logdir  ###
