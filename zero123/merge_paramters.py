@@ -19,4 +19,8 @@ has_keys = 0
 for item in zero123_xl_missing_keys:
     if item in control_state:
         has_keys += 1
+        zero_state[item] = control_state[item]
 print(has_keys, len(zero123_xl_missing_keys))
+
+
+torch.save(zero_123, "zero123-xl-txt.ckpt")
