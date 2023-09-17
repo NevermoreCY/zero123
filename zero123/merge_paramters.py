@@ -12,3 +12,10 @@ control =torch.load(path2)
 
 zero_state= zero_123["state_dict"]
 control_state = control["state_dict"]
+
+
+has_keys = 0
+for item in zero123_xl_missing_keys:
+    if item in control_state:
+        has_keys += 1
+print(has_keys, len(zero123_xl_missing_keys))
