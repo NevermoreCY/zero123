@@ -11,8 +11,8 @@ zero_123 = torch.load(path1)
 control =torch.load(path2)
 # print(type(control))
 # print('cond_stage_model.transformer.text_model.embeddings.position_ids' in control)
-zero_state= zero_123
-control_state = control["state_dict"]
+zero_state= zero_123["state_dict"]
+control_state = control
 
 
 has_keys = 0
