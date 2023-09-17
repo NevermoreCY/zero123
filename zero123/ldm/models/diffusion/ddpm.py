@@ -762,8 +762,8 @@ class LatentDiffusion(DDPM):
         with torch.enable_grad():
             clip_txt = self.get_learned_conditioning(xc_txt)
             T = T[:, None, :].repeat(1, 77, 1)
-            print("*** clip txt" , clip_txt.shape)
-            print("*** T ", T.shape)
+            # print("*** clip txt" , clip_txt.shape)
+            # print("*** T ", T.shape)
             clip_camera_txt = torch.concat([clip_txt,T], dim=-1)
 
             c = self.cc_projection(clip_camera_txt)
@@ -945,7 +945,7 @@ class LatentDiffusion(DDPM):
             cond = {key: cond}
 
         if hasattr(self, "split_input_params"):
-            print("*** our model has attribute of : split_input_params")
+            # print("*** our model has attribute of : split_input_params")
             assert len(cond) == 1  # todo can only deal with one conditioning atm
             assert not return_ids
             ks = self.split_input_params["ks"]  # eg. (128, 128)

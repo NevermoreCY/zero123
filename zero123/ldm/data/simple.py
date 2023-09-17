@@ -238,6 +238,7 @@ class ObjaverseData(Dataset):
             postprocess = instantiate_from_config(postprocess)
         self.postprocess = postprocess
         self.total_view = total_view
+        self.bad_files = []
 
         if not isinstance(ext, (tuple, list, ListConfig)):
             ext = [ext]
@@ -333,15 +334,32 @@ class ObjaverseData(Dataset):
             prompt = f.readline()
 
         except:
+            if filename not in self.bad_files:
+                self.bad_files.append(filename)
+            print("Bad file encoutered : ", filename)
             # very hacky solution, sorry about this
-            filename = os.path.join(self.root_dir, '692db5f2d3a04bb286cb977a7dba903e_1') # this one we know is valid
+            filename = os.path.join(self.root_dir, '0a0b504f51a94d95a2d492d3c372ebe5') # this one we know is a good case
+            # print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
             target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
-            cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
+            # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
             target_RT = np.load(os.path.join(filename, '%03d.npy' % index_target))
             cond_RT = np.load(os.path.join(filename, '%03d.npy' % index_cond))
-            target_im = torch.zeros_like(target_im)
-            canny_r = torch.zeros_like(cond_im)
-            prompt = ""
+            # get canny
+            cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
+            cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
+            cond_im = cv2.resize(cond_im, (256, 256))
+            # get canny edge
+            canny_r = random_canny(cond_im)
+            canny_r = canny_r[:, :, None]
+            canny_r = np.concatenate([canny_r, canny_r, canny_r], axis=2)
+            # normalize
+            canny_r = canny_r.astype(np.float32) / 255.0
+            #
+            canny_r = torch.tensor(canny_r)
+
+            # get text
+            f = open(os.path.join(filename, "BLIP_best_text.txt"), 'r')
+            prompt = f.readline()
 
         data["image_target"] = target_im
         data["image_cond"] = canny_r
