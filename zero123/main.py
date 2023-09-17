@@ -824,7 +824,7 @@ if __name__ == "__main__":
                          "filename": "{epoch:06}-{step:09}",
                          "verbose": True,
                          'save_top_k': -1,
-                         'every_n_train_steps': 10000,
+                         'every_n_train_steps': 10,
                          'save_weights_only': True
                      }
                      }
@@ -837,7 +837,7 @@ if __name__ == "__main__":
         elif 'ignore_keys_callback' in callbacks_cfg:
             del callbacks_cfg['ignore_keys_callback']
 
-        print("*** callbacks_cfg" , callbacks_cfg)
+        # print("*** callbacks_cfg" , callbacks_cfg)
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
         if not "plugins" in trainer_kwargs:
             trainer_kwargs["plugins"] = list()
@@ -857,8 +857,8 @@ if __name__ == "__main__":
         checkpoint_callback = ModelCheckpoint( filename='{epoch}-{step}--{val_loss:.2f}', every_n_train_steps=20)
 
 
-        print("*** trainer opt " , trainer_opt)
-        print("*** trainer kwargs " , trainer_kwargs)
+        # print("*** trainer opt " , trainer_opt)
+        # print("*** trainer kwargs " , trainer_kwargs)
 
         trainer = Trainer.from_argparse_args(trainer_opt, **trainer_kwargs)
         trainer.logdir = logdir  ###
