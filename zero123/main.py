@@ -853,10 +853,10 @@ if __name__ == "__main__":
         # del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
         # del callbacks_cfg["checkpoint_callback"]["params"]['every_n_train_steps']
         print("**** callbacks_cfg", callbacks_cfg)
-        from datetime import timedelta
-        delta = timedelta(
-            minutes=1,
-        )
+        # from datetime import timedelta
+        # delta = timedelta(
+        #     minutes=1,
+        # )
 
         # val/loss_simple_ema
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
