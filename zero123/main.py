@@ -826,7 +826,7 @@ if __name__ == "__main__":
                          "dirpath": os.path.join(ckptdir, 'trainstep_checkpoints'),
                          "filename": "{epoch:06}-{step:09}",
                          "verbose": True,
-                         'save_top_k': -1,
+                         'save_top_k': 3,
                          'every_n_train_steps': 10,
                          'save_weights_only': True
                      }
@@ -847,9 +847,15 @@ if __name__ == "__main__":
         # callbacks_cfg["checkpoint_callback"]["params"]['save_last'] = None
         callbacks_cfg["checkpoint_callback"]["params"]['filename'] = '{epoch}-{step}'
         # del callbacks_cfg["checkpoint_callback"]["params"]['save_top_k']
-        del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
+        # del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
+        # del callbacks_cfg["checkpoint_callback"]["params"]['every_n_train_steps']
         print("**** callbacks_cfg", callbacks_cfg)
+        from datetime import timedelta
+        delta = timedelta(
+            minutes=1,
+        )
 
+        # val/loss_simple_ema
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
 
         # personalization:
@@ -870,7 +876,7 @@ if __name__ == "__main__":
             setattr(CheckpointConnector, "hpc_resume_path", None)
 
         # save ckpt every n steps:
-        checkpoint_callback2 = ModelCheckpoint( filename='{epoch}-{step}', every_n_train_steps=15)
+        checkpoint_callback2 = ModelCheckpoint( save_last=True,filename='*cb2{epoch}-{step}', every_n_train_steps=15)
         trainer_kwargs["callbacks"].append(checkpoint_callback2)
 
 
