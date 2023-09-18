@@ -844,6 +844,7 @@ if __name__ == "__main__":
         print("*** callbacks_cfg" , callbacks_cfg)
         callbacks_cfg["checkpoint_callback"]["params"]['save_top_k'] = None
         callbacks_cfg["checkpoint_callback"]["params"]['save_last'] = None
+        callbacks_cfg["checkpoint_callback"]["params"]['filename'] = '{epoch}-{step}'
         del callbacks_cfg["checkpoint_callback"]["params"]['save_top_k']
         del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
         print("**** callbacks_cfg", callbacks_cfg)
