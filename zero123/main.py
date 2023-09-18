@@ -842,8 +842,10 @@ if __name__ == "__main__":
 
 
         print("*** callbacks_cfg" , callbacks_cfg)
-        callbacks_cfg["checkpoint_callback"].pop('save_top_k')
-        callbacks_cfg["checkpoint_callback"].pop('save_last')
+        callbacks_cfg["checkpoint_callback"]['save_top_k'] = None
+        callbacks_cfg["checkpoint_callback"]['save_last'] = None
+        del callbacks_cfg["checkpoint_callback"]['save_top_k']
+        del callbacks_cfg["checkpoint_callback"]['save_last']
         print("**** callbacks_cfg", callbacks_cfg)
 
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
