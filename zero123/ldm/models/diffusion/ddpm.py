@@ -1025,7 +1025,7 @@ class LatentDiffusion(DDPM):
             x_recon = fold(o) / normalization
 
         else:
-            print("*** our model doesn't have attribute of : split_input_params")
+            # print("*** our model doesn't have attribute of : split_input_params")
             x_recon = self.model(x_noisy, t, **cond)
 
         if isinstance(x_recon, tuple) and not return_ids:
