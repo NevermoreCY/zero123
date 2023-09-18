@@ -619,6 +619,7 @@ if __name__ == "__main__":
             "If you want to resume training in a new log folder, "
             "use -n/--name in combination with --resume_from_checkpoint"
         )
+
     if opt.resume:
         if not os.path.exists(opt.resume):
             raise ValueError("Cannot find {}".format(opt.resume))
@@ -843,13 +844,17 @@ if __name__ == "__main__":
 
         print("*** callbacks_cfg" , callbacks_cfg)
         callbacks_cfg["checkpoint_callback"]["params"]['save_top_k'] = None
-        callbacks_cfg["checkpoint_callback"]["params"]['save_last'] = None
+        # callbacks_cfg["checkpoint_callback"]["params"]['save_last'] = None
         callbacks_cfg["checkpoint_callback"]["params"]['filename'] = '{epoch}-{step}'
         del callbacks_cfg["checkpoint_callback"]["params"]['save_top_k']
-        del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
+        # del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
         print("**** callbacks_cfg", callbacks_cfg)
 
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
+
+        # personalization:
+        trainer_kwargs["callbacks"][-1].CHECKPOINT_NAME_LAST = "{epoch}-{step}--last"
+
         if not "plugins" in trainer_kwargs:
             trainer_kwargs["plugins"] = list()
         if not lightning_config.get("find_unused_parameters", True):
@@ -865,7 +870,8 @@ if __name__ == "__main__":
             setattr(CheckpointConnector, "hpc_resume_path", None)
 
         # save ckpt every n steps:
-        # checkpoint_callback = ModelCheckpoint( filename='{epoch}-{step}--{val_loss:.2f}', every_n_train_steps=20)
+        checkpoint_callback2 = ModelCheckpoint( filename='{epoch}-{step}', every_n_train_steps=15)
+        trainer_kwargs["callbacks"].append(checkpoint_callback2)
 
 
         # print("*** trainer opt " , trainer_opt)
