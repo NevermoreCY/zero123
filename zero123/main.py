@@ -842,6 +842,7 @@ if __name__ == "__main__":
 
 
 
+
         print("*** callbacks_cfg" , callbacks_cfg)
         callbacks_cfg["checkpoint_callback"]["params"]['save_top_k'] = 10
         # callbacks_cfg["checkpoint_callback"]["params"]['save_last'] = None
