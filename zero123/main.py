@@ -837,7 +837,7 @@ if __name__ == "__main__":
         elif 'ignore_keys_callback' in callbacks_cfg:
             del callbacks_cfg['ignore_keys_callback']
 
-        # print("*** callbacks_cfg" , callbacks_cfg)
+        print("*** callbacks_cfg" , callbacks_cfg)
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
         if not "plugins" in trainer_kwargs:
             trainer_kwargs["plugins"] = list()
