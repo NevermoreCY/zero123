@@ -611,6 +611,8 @@ if __name__ == "__main__":
     parser = Trainer.add_argparse_args(parser)
 
     opt, unknown = parser.parse_known_args()
+
+
     if opt.name and opt.resume:
         raise ValueError(
             "-n/--name and -r/--resume cannot be specified both."
@@ -837,7 +839,13 @@ if __name__ == "__main__":
         elif 'ignore_keys_callback' in callbacks_cfg:
             del callbacks_cfg['ignore_keys_callback']
 
+
+
         print("*** callbacks_cfg" , callbacks_cfg)
+        callbacks_cfg[-1].pop('save_top_k')
+        callbacks_cfg[-1].pop('save_last')
+        print("*** callbacks_cfg", callbacks_cfg)
+
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
         if not "plugins" in trainer_kwargs:
             trainer_kwargs["plugins"] = list()
@@ -854,7 +862,7 @@ if __name__ == "__main__":
             setattr(CheckpointConnector, "hpc_resume_path", None)
 
         # save ckpt every n steps:
-        checkpoint_callback = ModelCheckpoint( filename='{epoch}-{step}--{val_loss:.2f}', every_n_train_steps=20)
+        # checkpoint_callback = ModelCheckpoint( filename='{epoch}-{step}--{val_loss:.2f}', every_n_train_steps=20)
 
 
         # print("*** trainer opt " , trainer_opt)
