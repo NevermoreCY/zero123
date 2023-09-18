@@ -842,9 +842,9 @@ if __name__ == "__main__":
 
 
         print("*** callbacks_cfg" , callbacks_cfg)
-        callbacks_cfg[-1].pop('save_top_k')
-        callbacks_cfg[-1].pop('save_last')
-        print("*** callbacks_cfg", callbacks_cfg)
+        callbacks_cfg["checkpoint_callback"].pop('save_top_k')
+        callbacks_cfg["checkpoint_callback"].pop('save_last')
+        print("**** callbacks_cfg", callbacks_cfg)
 
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
         if not "plugins" in trainer_kwargs:
