@@ -847,6 +847,7 @@ if __name__ == "__main__":
         # callbacks_cfg["checkpoint_callback"]["params"]['save_last'] = None
         callbacks_cfg["checkpoint_callback"]["params"]['filename'] = '{epoch}-{step}'
         callbacks_cfg["checkpoint_callback"]["params"]['mode'] = 'min'
+        callbacks_cfg["checkpoint_callback"]["params"]['monitor'] ='global_step'
         # del callbacks_cfg["checkpoint_callback"]["params"]['save_top_k']
         # del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
         # del callbacks_cfg["checkpoint_callback"]["params"]['every_n_train_steps']
@@ -877,7 +878,7 @@ if __name__ == "__main__":
             setattr(CheckpointConnector, "hpc_resume_path", None)
 
         # save ckpt every n steps:
-        checkpoint_callback2 = ModelCheckpoint( save_last=True,filename='*cb2{epoch}-{step}', every_n_train_steps=15)
+        checkpoint_callback2 = ModelCheckpoint( monitor='global_step',save_last=True,filename='*cb2{epoch}-{step}', every_n_train_steps=9)
         trainer_kwargs["callbacks"].append(checkpoint_callback2)
 
 
