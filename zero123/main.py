@@ -846,6 +846,7 @@ if __name__ == "__main__":
         callbacks_cfg["checkpoint_callback"]["params"]['save_top_k'] = 10
         # callbacks_cfg["checkpoint_callback"]["params"]['save_last'] = None
         callbacks_cfg["checkpoint_callback"]["params"]['filename'] = '{epoch}-{step}'
+        callbacks_cfg["checkpoint_callback"]["params"]['mode'] = 'min'
         # del callbacks_cfg["checkpoint_callback"]["params"]['save_top_k']
         # del callbacks_cfg["checkpoint_callback"]["params"]['save_last']
         # del callbacks_cfg["checkpoint_callback"]["params"]['every_n_train_steps']
