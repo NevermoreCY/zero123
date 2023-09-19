@@ -862,7 +862,7 @@ if __name__ == "__main__":
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
 
         # personalization:
-        trainer_kwargs["callbacks"][-1].CHECKPOINT_NAME_LAST = "{epoch}-{step}--last"
+        # trainer_kwargs["callbacks"][-1].CHECKPOINT_NAME_LAST = "{epoch}-{step}--last"
 
         if not "plugins" in trainer_kwargs:
             trainer_kwargs["plugins"] = list()
