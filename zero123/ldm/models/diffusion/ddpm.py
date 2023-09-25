@@ -1318,7 +1318,7 @@ class LatentDiffusion(DDPM):
         use_ddim = ddim_steps is not None
 
         log = dict()
-        z, c, x, xrec, xc = self.get_input(batch, self.first_stage_key,
+        z, c, x, xrec, text_in ,xc = self.get_input(batch, self.first_stage_key,
                                            return_first_stage_outputs=True,
                                            force_c_encode=True,
                                            return_original_cond=True,
@@ -1327,19 +1327,25 @@ class LatentDiffusion(DDPM):
         n_row = min(x.shape[0], n_row)
         log["inputs"] = x
         log["reconstruction"] = xrec
+        log["text_prompt"] = log_txt_as_img((x.shape[2], x.shape[3]), batch["debug_txt"], size=x.shape[2]//25)
         if self.model.conditioning_key is not None:
             if hasattr(self.cond_stage_model, "decode"):
+                print("*** decode 1")
                 xc = self.cond_stage_model.decode(c)
                 log["conditioning"] = xc
             elif self.cond_stage_key in ["caption", "txt"]:
+                print("*** decode2")
                 xc = log_txt_as_img((x.shape[2], x.shape[3]), batch[self.cond_stage_key], size=x.shape[2]//25)
                 log["conditioning"] = xc
             elif self.cond_stage_key == 'class_label':
+                print("*** decode3")
                 xc = log_txt_as_img((x.shape[2], x.shape[3]), batch["human_label"], size=x.shape[2]//25)
                 log['conditioning'] = xc
             elif isimage(xc):
+                print("*** is a image so just xc")
                 log["conditioning"] = xc
             if ismap(xc):
+                print("*** decode4")
                 log["original_conditioning"] = self.to_rgb(xc)
 
         if plot_diffusion_rows:
@@ -1372,6 +1378,7 @@ class LatentDiffusion(DDPM):
                 denoise_grid = self._get_denoise_row_from_list(z_denoise_row)
                 log["denoise_row"] = denoise_grid
 
+            # we are using AUtoencoder KL so ignore this
             if quantize_denoised and not isinstance(self.first_stage_model, AutoencoderKL) and not isinstance(
                     self.first_stage_model, IdentityFirstStage):
                 # also display when quantizing x0 while sampling

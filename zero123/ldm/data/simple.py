@@ -239,6 +239,7 @@ class ObjaverseData(Dataset):
         self.postprocess = postprocess
         self.total_view = total_view
         self.bad_files = []
+        self.debug = True
 
         if not isinstance(ext, (tuple, list, ListConfig)):
             ext = [ext]
@@ -281,7 +282,9 @@ class ObjaverseData(Dataset):
         d_z = z_target - z_cond
         
         d_T = torch.tensor([d_theta.item(), math.sin(d_azimuth.item()), math.cos(d_azimuth.item()), d_z.item()])
-        return d_T
+
+        debug_string ="d_theta is : " + str(d_theta.item()) + "  d_azimuth : " + str(d_azimuth.item()) + " d_z is ", str(d_z.item())
+        return d_T , debug_string
 
     def load_im(self, path, color):
         '''
@@ -311,6 +314,7 @@ class ObjaverseData(Dataset):
         color = [1., 1., 1., 1.]
 
         try:
+            data_id = self.paths[index]
             # print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
             target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
             # cond_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_cond), color))
@@ -338,6 +342,7 @@ class ObjaverseData(Dataset):
                 self.bad_files.append(filename)
             print("Bad file encoutered : ", filename)
             # very hacky solution, sorry about this
+            data_id = '0a0b504f51a94d95a2d492d3c372ebe5'
             filename = os.path.join(self.root_dir, '0a0b504f51a94d95a2d492d3c372ebe5') # this one we know is a good case
             # print("first trying file " , os.path.join(filename, '%03d.png' % index_target) )
             target_im = self.process_im(self.load_im(os.path.join(filename, '%03d.png' % index_target), color))
@@ -363,8 +368,14 @@ class ObjaverseData(Dataset):
 
         data["image_target"] = target_im
         data["image_cond"] = canny_r
-        data["T"] = self.get_T(target_RT, cond_RT)
+        T , debug_t = self.get_T(target_RT, cond_RT)
+        data["T"] = T
         data["txt"] = prompt
+        if self.debug:
+            debug_txt ="data id is : " + data_id + "\n"+  "  Txt is : " + prompt + " \n " + " Camera difference is : " + debug_t
+            data["debug_txt"] = debug_txt
+            print("debug_txt is ", debug_txt)
+
 
         # print("target_im type : ", type(target_im), " , shape is : " ,target_im.shape)
         # print("canny_r type : ", type(canny_r), " , shape is : ",canny_r.shape)
