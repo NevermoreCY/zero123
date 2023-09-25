@@ -114,6 +114,6 @@ lightning:
 
   trainer:
     benchmark: True
-    val_check_interval: 5000000 # really sorry
-    num_sanity_val_steps: 0
+    val_check_interval: 500 # really sorry
+    num_sanity_val_steps: 2
     accumulate_grad_batches: 1
