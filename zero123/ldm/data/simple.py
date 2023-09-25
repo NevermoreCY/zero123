@@ -283,8 +283,8 @@ class ObjaverseData(Dataset):
         
         d_T = torch.tensor([d_theta.item(), math.sin(d_azimuth.item()), math.cos(d_azimuth.item()), d_z.item()])
 
-        debug_string ="d_theta is : " + str(d_theta.item()) + "  d_azimuth : " + str(d_azimuth.item()) + " d_z is ", str(d_z.item())
-        print("dbg str " , debug_string)
+        debug_string ="d_theta is : " + str(d_theta.item()) + "  d_azimuth : " + str(d_azimuth.item()) + " d_z is "+ str(d_z.item())
+        # print("dbg str " , debug_string)
         return d_T , debug_string
 
     def load_im(self, path, color):
