@@ -284,6 +284,7 @@ class ObjaverseData(Dataset):
         d_T = torch.tensor([d_theta.item(), math.sin(d_azimuth.item()), math.cos(d_azimuth.item()), d_z.item()])
 
         debug_string ="d_theta is : " + str(d_theta.item()) + "  d_azimuth : " + str(d_azimuth.item()) + " d_z is ", str(d_z.item())
+        print("dbg str " , debug_string)
         return d_T , debug_string
 
     def load_im(self, path, color):
@@ -372,7 +373,7 @@ class ObjaverseData(Dataset):
         data["T"] = T
         data["txt"] = prompt
         if self.debug:
-            print(type(data_id) , type(prompt), len(prompt), type(debug_t))
+            # print(type(data_id) , type(prompt), len(prompt), type(debug_t))
             debug_txt ="data id is : " + data_id + "\n"+  "  Txt is : " + prompt + " \n " + " Camera difference is : " + debug_t
             data["debug_txt"] = debug_txt
             print("debug_txt is ", debug_txt)
