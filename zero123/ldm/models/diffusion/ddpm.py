@@ -1318,7 +1318,7 @@ class LatentDiffusion(DDPM):
         use_ddim = ddim_steps is not None
 
         log = dict()
-        z, c, x, xrec, text_in ,xc = self.get_input(batch, self.first_stage_key,
+        z, c, x, xrec ,xc = self.get_input(batch, self.first_stage_key,
                                            return_first_stage_outputs=True,
                                            force_c_encode=True,
                                            return_original_cond=True,
