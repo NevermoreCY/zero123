@@ -372,6 +372,7 @@ class ObjaverseData(Dataset):
         data["T"] = T
         data["txt"] = prompt
         if self.debug:
+            print(type(data_id) , type(prompt), len(prompt), type(debug_t))
             debug_txt ="data id is : " + data_id + "\n"+  "  Txt is : " + prompt + " \n " + " Camera difference is : " + debug_t
             data["debug_txt"] = debug_txt
             print("debug_txt is ", debug_txt)
