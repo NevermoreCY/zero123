@@ -3,6 +3,8 @@ import json
 from tqdm import tqdm
 import shutil
 
+from distutils.dir_util import copy_tree
+
 
 file_dir = "/yuch_ws/views_release"
 
@@ -32,7 +34,7 @@ cur = fh
 for i in tqdm(range(len(cur))):
     original_path = file_dir + "/" + cur[i]
     target_path = fh_dir + "/" + cur[i]
-    shutil.copy(original_path,target_path)
+    copy_tree(original_path,target_path)
 
 
 
