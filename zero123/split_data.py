@@ -16,24 +16,25 @@ with open(os.path.join(root_dir, 'valid_paths.json')) as f:
 
 h = len(paths) // 4
 
-fh = paths[:h]
-sh = paths[h:2*h]
+one = paths[:h]
+two = paths[h:2*h]
 third = paths[2*h:3*h]
 four = paths[3*h:]
 
 
 
-fh_dir = "/yuch_ws/views_p1"
-sh_dir = "/yuch_ws/views_p2"
-fh_dir = "/yuch_ws/views_p3"
-sh_dir = "/yuch_ws/views_p4"
+one_dir = "/yuch_ws/views_p1"
+two_dir = "/yuch_ws/views_p2"
+third_dir = "/yuch_ws/views_p3"
+four_dir = "/yuch_ws/views_p4"
 
 
-cur = fh
-print("*** current dir is ", cur)
+cur = one
+cur_dir = one_dir
+print("*** current dir is ", cur_dir)
 for i in tqdm(range(len(cur))):
     original_path = file_dir + "/" + cur[i]
-    target_path = fh_dir + "/" + cur[i]
+    target_path = cur_dir + "/" + cur[i]
     copy_tree(original_path,target_path)
 
 
