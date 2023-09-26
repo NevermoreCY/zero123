@@ -30,7 +30,7 @@ sh_dir = "/yuch_ws/views_p4"
 
 
 cur = fh
-
+print("*** current dir is ", cur)
 for i in tqdm(range(len(cur))):
     original_path = file_dir + "/" + cur[i]
     target_path = fh_dir + "/" + cur[i]
