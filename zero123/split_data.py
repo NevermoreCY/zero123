@@ -29,8 +29,8 @@ third_dir = "/yuch_ws/views_p3"
 four_dir = "/yuch_ws/views_p4"
 
 
-cur = third
-cur_dir = third_dir
+cur = four
+cur_dir = four_dir
 print("*** current dir is ", cur_dir)
 for i in tqdm(range(len(cur))):
     original_path = file_dir + "/" + cur[i]
