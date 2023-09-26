@@ -30,8 +30,8 @@ sh_dir = "/yuch_ws/views_p4"
 cur = fh
 
 for i in tqdm(range(len(cur))):
-    original_path = file_dir + cur[i]
-    target_path = fh_dir + cur[i]
+    original_path = file_dir + "/" + cur[i]
+    target_path = fh_dir + "/" + cur[i]
     shutil.copy(original_path,target_path)
 
 
