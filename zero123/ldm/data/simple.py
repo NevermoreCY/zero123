@@ -325,6 +325,7 @@ class ObjaverseData(Dataset):
             cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
             cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
             cond_im = cv2.resize(cond_im,(256,256))
+            print("*** before random canny, cond_im : ", type(cond_im), cond_im.shape,np.max(cond_im),np.min(cond_im))
             # get canny edge
             canny_r = random_canny(cond_im)
             canny_r = canny_r[:,:,None]

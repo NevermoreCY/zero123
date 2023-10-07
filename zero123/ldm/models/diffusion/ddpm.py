@@ -1540,6 +1540,8 @@ class DiffusionWrapper(pl.LightningModule):
 
             print("*** xc dimenstion: ", xc.shape)
             print("*** cc shape: ", cc.shape)
+            # 64 8 32 32
+            # 64 77 768
 
             out = self.diffusion_model(xc, t, context=cc)
         elif self.conditioning_key == 'hybrid-adm':
