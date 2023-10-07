@@ -910,10 +910,12 @@ class LatentDiffusion(DDPM):
 
     def shared_step(self, batch, **kwargs):
         x, c = self.get_input(batch, self.first_stage_key)
+        print(" calling self(x,c) \n")
         loss = self(x, c)
         return loss
 
     def forward(self, x, c, *args, **kwargs):
+        print("calling forward (x,c) \n")
         t = torch.randint(0, self.num_timesteps, (x.shape[0],), device=self.device).long()
         if self.model.conditioning_key is not None:
             assert c is not None
@@ -937,7 +939,7 @@ class LatentDiffusion(DDPM):
     def apply_model(self, x_noisy, t, cond, return_ids=False):
 
         if isinstance(cond, dict):
-            # hybrid case, cond is exptected to be a dict
+            print("hybrid case, cond is exptected to be a dict")
             pass
         else:
             if not isinstance(cond, list):
@@ -946,7 +948,7 @@ class LatentDiffusion(DDPM):
             cond = {key: cond}
 
         if hasattr(self, "split_input_params"):
-            # print("*** our model has attribute of : split_input_params")
+            print("*** our model has attribute of : split_input_params")
             assert len(cond) == 1  # todo can only deal with one conditioning atm
             assert not return_ids
             ks = self.split_input_params["ks"]  # eg. (128, 128)
@@ -1026,7 +1028,8 @@ class LatentDiffusion(DDPM):
             x_recon = fold(o) / normalization
 
         else:
-            # print("*** our model doesn't have attribute of : split_input_params")
+
+            print("*** our model doesn't have attribute of : split_input_params")
             x_recon = self.model(x_noisy, t, **cond)
 
         if isinstance(x_recon, tuple) and not return_ids:

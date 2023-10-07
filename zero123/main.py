@@ -381,6 +381,8 @@ class ImageLogger(Callback):
             should_log = True
         else:
             should_log = self.check_frequency(check_idx)
+        print("***should_log ? " , should_log , "self.log_all_val: ", self.log_all_val)
+
         if (should_log and  (check_idx % self.batch_freq == 0) and
                 hasattr(pl_module, "log_images") and
                 callable(pl_module.log_images) and
