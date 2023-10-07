@@ -412,6 +412,7 @@ class ImageLogger(Callback):
                 pl_module.train()
 
     def check_frequency(self, check_idx):
+        print("*** self.batch_freq = ", self.batch_freq , "check idx is ", check_idx)
         if ((check_idx % self.batch_freq) == 0 or (check_idx in self.log_steps)) and (
                 check_idx > 0 or self.log_first_step):
             try:
