@@ -328,11 +328,13 @@ class DDPM(pl.LightningModule):
                 extract_into_tensor(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape) * noise)
 
     def get_loss(self, pred, target, mean=True):
+        print("loss type is", self.loss_type, "mean is ", mean )
         if self.loss_type == 'l1':
             loss = (target - pred).abs()
             if mean:
                 loss = loss.mean()
         elif self.loss_type == 'l2':
+
             if mean:
                 loss = torch.nn.functional.mse_loss(target, pred)
             else:
@@ -1513,7 +1515,7 @@ class DiffusionWrapper(pl.LightningModule):
 
     def forward(self, x, t, c_concat: list = None, c_crossattn: list = None, c_adm=None):
 
-        # print("***forward process of diffusion wrapper, conditiony key is : " , self.conditioning_key , "\n")
+        print("***forward process of diffusion wrapper, conditiony key is : " , self.conditioning_key , "\n")
         if self.conditioning_key is None:
             out = self.diffusion_model(x, t)
         elif self.conditioning_key == 'concat':
@@ -1535,6 +1537,10 @@ class DiffusionWrapper(pl.LightningModule):
 
             xc = torch.cat([x] + c_concat, dim=1)
             cc = torch.cat(c_crossattn, 1)
+
+            print("*** xc dimenstion: ", xc.shape)
+            print("*** cc shape: ", cc.shape)
+
             out = self.diffusion_model(xc, t, context=cc)
         elif self.conditioning_key == 'hybrid-adm':
             assert c_adm is not None
