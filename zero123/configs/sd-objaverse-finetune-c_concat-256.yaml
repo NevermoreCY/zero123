@@ -99,7 +99,7 @@ lightning:
     image_logger:
       target: main.ImageLogger
       params:
-        batch_frequency: 500
+        batch_frequency: 10
         max_images: 32
         increase_log_steps: False
         log_first_step: True
@@ -114,6 +114,6 @@ lightning:
 
   trainer:
     benchmark: True
-    val_check_interval: 500 # really sorry
+    val_check_interval: 10 # really sorry
     num_sanity_val_steps: 2
     accumulate_grad_batches: 1
