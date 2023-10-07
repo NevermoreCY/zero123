@@ -436,6 +436,7 @@ class DDPM(pl.LightningModule):
 
     @torch.no_grad()
     def log_images(self, batch, N=8, n_row=2, sample=True, return_keys=None, **kwargs):
+        print("*** we are running log images function from ddpm which is wrong. \n")
         log = dict()
         x = self.get_input(batch, self.first_stage_key)
         N = min(x.shape[0], N)
@@ -1314,6 +1315,9 @@ class LatentDiffusion(DDPM):
                    plot_diffusion_rows=True, unconditional_guidance_scale=1., unconditional_guidance_label=None,
                    use_ema_scope=True,
                    **kwargs):
+
+
+        print("*** we are runing log images function inside latent diffusion, which is correct! \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
@@ -1594,7 +1598,9 @@ class LatentUpscaleDiffusion(LatentDiffusion):
         log["x_lr"] = x_low
         log[f"x_lr_rec_@noise_levels{'-'.join(map(lambda x: str(x), list(noise_level.cpu().numpy())))}"] = x_low_rec
         if self.model.conditioning_key is not None:
-            if hasattr(self.cond_stage_model, "decode"):
+            print("*** self.cond_stage_key is " , self.cond_stage_key , ", should be image_cond.\n")
+
+            if hasattr(self.cond_stage_model, "decode"): # not using decoder for CLIP
                 xc = self.cond_stage_model.decode(c)
                 log["conditioning"] = xc
             elif self.cond_stage_key in ["caption", "txt"]:
