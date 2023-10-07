@@ -427,7 +427,8 @@ class ImageLogger(Callback):
             self.log_img(pl_module, batch, batch_idx, split="train")
 
     def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx):
-        print("****** end of validation batch, start log validation images.\n")
+        print("****** end of validation batch, check whether log validation images.\n")
+        print("****** self.disabled is , ", self.disabled , "global_step is ", pl_module.global_step , "\n")
         if not self.disabled and pl_module.global_step > 0:
             self.log_img(pl_module, batch, batch_idx, split="val")
         if hasattr(pl_module, 'calibrate_grad_norm'):

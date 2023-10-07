@@ -1589,6 +1589,8 @@ class LatentUpscaleDiffusion(LatentDiffusion):
                    plot_denoise_rows=False, plot_progressive_rows=True, plot_diffusion_rows=True,
                    unconditional_guidance_scale=1., unconditional_guidance_label=None, use_ema_scope=True,
                    **kwargs):
+
+        print("*** we are runing log images function inside LatentUpscaleDiffusion \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
@@ -1777,6 +1779,7 @@ class LatentInpaintDiffusion(LatentDiffusion):
                    plot_diffusion_rows=True, unconditional_guidance_scale=1., unconditional_guidance_label=None,
                    use_ema_scope=True,
                    **kwargs):
+        print("*** log images on LatentInpaintDiffusion \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
@@ -1862,6 +1865,7 @@ class Layout2ImgDiffusion(LatentDiffusion):
         super().__init__(cond_stage_key=cond_stage_key, *args, **kwargs)
 
     def log_images(self, batch, N=8, *args, **kwargs):
+        print("*** log images on Layout2ImgDiffusion \n")
         logs = super().log_images(batch=batch, N=N, *args, **kwargs)
 
         key = 'train' if self.training else 'validation'
@@ -1914,6 +1918,8 @@ class SimpleUpscaleDiffusion(LatentDiffusion):
                    plot_denoise_rows=False, plot_progressive_rows=True, plot_diffusion_rows=True,
                    unconditional_guidance_scale=1., unconditional_guidance_label=None, use_ema_scope=True,
                    **kwargs):
+
+        print("*** log images on SimpleUpscaleDiffusion \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
@@ -2011,6 +2017,8 @@ class MultiCatFrameDiffusion(LatentDiffusion):
                    plot_denoise_rows=False, plot_progressive_rows=True, plot_diffusion_rows=True,
                    unconditional_guidance_scale=1., unconditional_guidance_label=None, use_ema_scope=True,
                    **kwargs):
+
+        print("*** log images on MultiCatFrameDiffusion \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
