@@ -859,6 +859,7 @@ if __name__ == "__main__":
         #     minutes=1,
         # )
 
+
         # val/loss_simple_ema
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
 
