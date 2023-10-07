@@ -1371,6 +1371,7 @@ class LatentDiffusion(DDPM):
             diffusion_grid = make_grid(diffusion_grid, nrow=diffusion_row.shape[0])
             log["diffusion_row"] = diffusion_grid
 
+        print("*** sampling \n")
         if sample:
             # get denoise row
             with ema_scope("Sampling"):
@@ -1508,6 +1509,8 @@ class DiffusionWrapper(pl.LightningModule):
         assert self.conditioning_key in [None, 'concat', 'crossattn', 'hybrid', 'adm', 'hybrid-adm']
 
     def forward(self, x, t, c_concat: list = None, c_crossattn: list = None, c_adm=None):
+
+        print("***forward process of diffusion wrapper, conditiony key is : " , self.conditioning_key , "\n")
         if self.conditioning_key is None:
             out = self.diffusion_model(x, t)
         elif self.conditioning_key == 'concat':
