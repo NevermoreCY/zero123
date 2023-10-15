@@ -74,7 +74,7 @@ data:
   params:
     root_dir: '/yuch_ws/views_release'
 #    root_dir: 'view_release'
-    batch_size: 1536
+    batch_size: 500
 #    batch_size: 10
     num_workers: 16
     total_view: 12
@@ -116,6 +116,6 @@ lightning:
 
   trainer:
     benchmark: True
-    val_check_interval: 2 # really sorry
+    val_check_interval: 20 # really sorry
     num_sanity_val_steps: 2
     accumulate_grad_batches: 1
