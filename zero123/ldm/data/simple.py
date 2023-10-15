@@ -343,7 +343,7 @@ class ObjaverseData(Dataset):
             canny_r = torch.tensor(canny_r)
 
             # get text
-            f = open(os.path.join(filename, "BLIP_best_text.txt") , 'r')
+            f = open(os.path.join(filename, "BLIP_best_text_v2.txt") , 'r')
             prompt = f.readline()
 
         except:
@@ -372,7 +372,7 @@ class ObjaverseData(Dataset):
             canny_r = torch.tensor(canny_r)
 
             # get text
-            f = open(os.path.join(filename, "BLIP_best_text.txt"), 'r')
+            f = open(os.path.join(filename, "BLIP_best_text_v2.txt"), 'r')
             prompt = f.readline()
 
         data["image_target"] = target_im

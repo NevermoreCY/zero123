@@ -941,7 +941,7 @@ class LatentDiffusion(DDPM):
     def apply_model(self, x_noisy, t, cond, return_ids=False):
 
         if isinstance(cond, dict):
-            print("hybrid case, cond is exptected to be a dict")
+            # print("hybrid case, cond is exptected to be a dict")
             pass
         else:
             if not isinstance(cond, list):
@@ -950,7 +950,7 @@ class LatentDiffusion(DDPM):
             cond = {key: cond}
 
         if hasattr(self, "split_input_params"):
-            print("*** our model has attribute of : split_input_params")
+            # print("*** our model has attribute of : split_input_params")
             assert len(cond) == 1  # todo can only deal with one conditioning atm
             assert not return_ids
             ks = self.split_input_params["ks"]  # eg. (128, 128)
@@ -1031,7 +1031,7 @@ class LatentDiffusion(DDPM):
 
         else:
 
-            print("*** our model doesn't have attribute of : split_input_params")
+            # print("*** our model doesn't have attribute of : split_input_params")
             x_recon = self.model(x_noisy, t, **cond)
 
         if isinstance(x_recon, tuple) and not return_ids:
@@ -1059,11 +1059,11 @@ class LatentDiffusion(DDPM):
 
     def p_losses(self, x_start, cond, t, noise=None):
 
-        print("x_start shape", x_start.shape)
+        # print("x_start shape", x_start.shape)
         noise = default(noise, lambda: torch.randn_like(x_start))
-        print("noise shape ", noise.shape)
+        # print("noise shape ", noise.shape)
         x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
-        print("x_noisy shape", x_noisy.shape)
+        # print("x_noisy shape", x_noisy.shape)
         model_output = self.apply_model(x_noisy, t, cond)
 
         loss_dict = {}
@@ -1520,7 +1520,7 @@ class DiffusionWrapper(pl.LightningModule):
 
     def forward(self, x, t, c_concat: list = None, c_crossattn: list = None, c_adm=None):
 
-        print("***forward process of diffusion wrapper, conditiony key is : " , self.conditioning_key , "\n")
+        # print("***forward process of diffusion wrapper, conditiony key is : " , self.conditioning_key , "\n")
         if self.conditioning_key is None:
             out = self.diffusion_model(x, t)
         elif self.conditioning_key == 'concat':
@@ -1606,7 +1606,7 @@ class LatentUpscaleDiffusion(LatentDiffusion):
                    unconditional_guidance_scale=1., unconditional_guidance_label=None, use_ema_scope=True,
                    **kwargs):
 
-        print("*** we are runing log images function inside LatentUpscaleDiffusion \n")
+        # print("*** we are runing log images function inside LatentUpscaleDiffusion \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
