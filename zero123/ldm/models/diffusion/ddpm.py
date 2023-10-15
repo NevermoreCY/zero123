@@ -1358,6 +1358,7 @@ class LatentDiffusion(DDPM):
                 log["original_conditioning"] = self.to_rgb(xc)
 
         print("Do we plot diffusion rows? ", plot_diffusion_rows , " .\n")
+        plot_diffusion_rows = True
         if plot_diffusion_rows:
             # get diffusion row
             diffusion_row = list()

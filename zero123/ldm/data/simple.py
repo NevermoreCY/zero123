@@ -179,8 +179,11 @@ class ObjaverseDataModuleFromConfig(pl.LightningDataModule):
         if validation is not None:
             dataset_config = validation
 
+        self.valid_path = dataset_config.valid_path
+
         if 'image_transforms' in dataset_config:
             image_transforms = [torchvision.transforms.Resize(dataset_config.image_transforms.size)]
+            self.image_size = dataset_config.image_transforms.size
         else:
             image_transforms = []
         image_transforms.extend([transforms.ToTensor(),
@@ -190,18 +193,18 @@ class ObjaverseDataModuleFromConfig(pl.LightningDataModule):
 
     def train_dataloader(self):
         dataset = ObjaverseData(root_dir=self.root_dir, total_view=self.total_view, validation=False, \
-                                image_transforms=self.image_transforms)
+                                image_transforms=self.image_transforms, image_size=self.image_size, valid_path=self.valid_path)
         sampler = DistributedSampler(dataset)
         return wds.WebLoader(dataset, batch_size=self.batch_size, num_workers=self.num_workers, shuffle=False, sampler=sampler)
 
     def val_dataloader(self):
         dataset = ObjaverseData(root_dir=self.root_dir, total_view=self.total_view, validation=True, \
-                                image_transforms=self.image_transforms)
+                                image_transforms=self.image_transforms,image_size=self.image_size, valid_path=self.valid_path)
         sampler = DistributedSampler(dataset)
         return wds.WebLoader(dataset, batch_size=self.batch_size, num_workers=self.num_workers, shuffle=False)
     
     def test_dataloader(self):
-        return wds.WebLoader(ObjaverseData(root_dir=self.root_dir, total_view=self.total_view, validation=self.validation),\
+        return wds.WebLoader(ObjaverseData(root_dir=self.root_dir, total_view=self.total_view, validation=self.validation, image_size=self.image_size,valid_path=self.valid_path),\
                           batch_size=self.batch_size, num_workers=self.num_workers, shuffle=False)
 
 def random_canny(image):
@@ -225,7 +228,9 @@ class ObjaverseData(Dataset):
         postprocess=None,
         return_paths=False,
         total_view=12,
-        validation=False
+        validation=False,
+        image_size=256 ,
+        valid_path='valid_path.json'
         ) -> None:
         """Create a dataset from a folder of images.
         If you pass in a root directory it will be searched for images
@@ -240,11 +245,12 @@ class ObjaverseData(Dataset):
         self.total_view = total_view
         self.bad_files = []
         self.debug = True
+        self.image_size = image_size
 
         if not isinstance(ext, (tuple, list, ListConfig)):
             ext = [ext]
-
-        with open(os.path.join(root_dir, 'valid_paths.json')) as f:
+        print("valid_path is ", valid_path)
+        with open(os.path.join(root_dir, valid_path)) as f:
             self.paths = json.load(f)
             
         total_objects = len(self.paths)
@@ -324,7 +330,8 @@ class ObjaverseData(Dataset):
             # get canny
             cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
             cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
-            cond_im = cv2.resize(cond_im,(256,256))
+            print("image size is ", self.image_size)
+            cond_im = cv2.resize(cond_im,(self.image_size,self.image_size), interpolation=cv2.INTER_AREA)
             print("*** before random canny, cond_im : ", type(cond_im), cond_im.shape,np.max(cond_im),np.min(cond_im))
             # get canny edge
             canny_r = random_canny(cond_im)
@@ -354,7 +361,7 @@ class ObjaverseData(Dataset):
             # get canny
             cond_im = cv2.imread(os.path.join(filename, '%03d.png' % index_cond))
             cond_im = cv2.cvtColor(cond_im, cv2.COLOR_BGR2RGB)
-            cond_im = cv2.resize(cond_im, (256, 256))
+            cond_im = cv2.resize(cond_im, (self.image_size, self.image_size), interpolation=cv2.INTER_AREA)
             # get canny edge
             canny_r = random_canny(cond_im)
             canny_r = canny_r[:, :, None]
