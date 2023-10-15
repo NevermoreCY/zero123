@@ -28,7 +28,7 @@ model:
     unet_config:
       target: ldm.modules.diffusionmodules.openaimodel.UNetModel
       params:
-        image_size: 32 # unused
+        image_size: 16 # unused
         in_channels: 8
         out_channels: 4
         model_channels: 320
@@ -116,6 +116,6 @@ lightning:
 
   trainer:
     benchmark: True
-    val_check_interval: 20 # really sorry
-    num_sanity_val_steps: 2
+    val_check_interval: 5000000 # really sorry
+    num_sanity_val_steps: 0
     accumulate_grad_batches: 1
