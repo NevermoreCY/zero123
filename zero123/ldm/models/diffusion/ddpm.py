@@ -1058,8 +1058,12 @@ class LatentDiffusion(DDPM):
         return mean_flat(kl_prior) / np.log(2.0)
 
     def p_losses(self, x_start, cond, t, noise=None):
+
+        print("x_start shape", x_start.shape)
         noise = default(noise, lambda: torch.randn_like(x_start))
+        print("noise shape ", noise.shape)
         x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
+        print("x_noisy shape", x_noisy.shape)
         model_output = self.apply_model(x_noisy, t, cond)
 
         loss_dict = {}
@@ -1529,8 +1533,8 @@ class DiffusionWrapper(pl.LightningModule):
             cc = torch.cat(c_crossattn, 1)
             out = self.diffusion_model(x, t, context=cc)
         elif self.conditioning_key == 'hybrid':
-            print("*** x dimenstion: ", x.shape)
-            print("*** c_concat shape: ", len(c_concat) ,c_concat[0].shape)
+            print("*** x dimenstion: ", x.shape) # noised image
+            print("*** c_concat shape: ", len(c_concat) ,c_concat[0].shape) # canny control
             print("*** c_crossattn dimenstion", len(c_crossattn), c_crossattn[0].shape)
             #  torch.Size([64, 4, 32, 32])
             #  torch.Size([64, 4, 32, 32])
