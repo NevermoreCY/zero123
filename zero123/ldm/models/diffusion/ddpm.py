@@ -328,7 +328,7 @@ class DDPM(pl.LightningModule):
                 extract_into_tensor(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape) * noise)
 
     def get_loss(self, pred, target, mean=True):
-        print("loss type is", self.loss_type, "mean is ", mean )
+        # print("loss type is", self.loss_type, "mean is ", mean )
         if self.loss_type == 'l1':
             loss = (target - pred).abs()
             if mean:
@@ -438,7 +438,7 @@ class DDPM(pl.LightningModule):
 
     @torch.no_grad()
     def log_images(self, batch, N=8, n_row=2, sample=True, return_keys=None, **kwargs):
-        print("*** we are running log images function from ddpm which is wrong. \n")
+        # print("*** we are running log images function from ddpm which is wrong. \n")
         log = dict()
         x = self.get_input(batch, self.first_stage_key)
         N = min(x.shape[0], N)
@@ -912,12 +912,12 @@ class LatentDiffusion(DDPM):
 
     def shared_step(self, batch, **kwargs):
         x, c = self.get_input(batch, self.first_stage_key)
-        print(" calling self(x,c) \n")
+        # print(" calling self(x,c) \n")
         loss = self(x, c)
         return loss
 
     def forward(self, x, c, *args, **kwargs):
-        print("calling forward (x,c) \n")
+        # print("calling forward (x,c) \n")
         t = torch.randint(0, self.num_timesteps, (x.shape[0],), device=self.device).long()
         if self.model.conditioning_key is not None:
             assert c is not None
@@ -1326,7 +1326,7 @@ class LatentDiffusion(DDPM):
                    **kwargs):
 
 
-        print("*** we are runing log images function inside latent diffusion, which is correct! \n")
+        # print("*** we are runing log images function inside latent diffusion, which is correct! \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
@@ -1343,22 +1343,22 @@ class LatentDiffusion(DDPM):
         log["text_prompt"] = log_txt_as_img((x.shape[2], x.shape[3]), batch["debug_txt"], size=x.shape[2]//25)
         if self.model.conditioning_key is not None:
             if hasattr(self.cond_stage_model, "decode"):
-                print("*** decode 1")
+                # print("*** decode 1")
                 xc = self.cond_stage_model.decode(c)
                 log["conditioning"] = xc
             elif self.cond_stage_key in ["caption", "txt"]:
-                print("*** decode2")
+                # print("*** decode2")
                 xc = log_txt_as_img((x.shape[2], x.shape[3]), batch[self.cond_stage_key], size=x.shape[2]//25)
                 log["conditioning"] = xc
             elif self.cond_stage_key == 'class_label':
-                print("*** decode3")
+                # print("*** decode3")
                 xc = log_txt_as_img((x.shape[2], x.shape[3]), batch["human_label"], size=x.shape[2]//25)
                 log['conditioning'] = xc
             elif isimage(xc):
-                print("*** is a image so just xc")
+                # print("*** is a image so just xc")
                 log["conditioning"] = xc
             if ismap(xc):
-                print("*** decode4")
+                # print("*** decode4")
                 log["original_conditioning"] = self.to_rgb(xc)
 
         print("Do we plot diffusion rows? ", plot_diffusion_rows , " .\n")
@@ -1381,7 +1381,7 @@ class LatentDiffusion(DDPM):
             diffusion_grid = make_grid(diffusion_grid, nrow=diffusion_row.shape[0])
             log["diffusion_row"] = diffusion_grid
 
-        print("*** sampling \n")
+        # print("*** sampling \n")
         if sample:
             # get denoise row
             with ema_scope("Sampling"):
@@ -1620,7 +1620,7 @@ class LatentUpscaleDiffusion(LatentDiffusion):
         log["x_lr"] = x_low
         log[f"x_lr_rec_@noise_levels{'-'.join(map(lambda x: str(x), list(noise_level.cpu().numpy())))}"] = x_low_rec
         if self.model.conditioning_key is not None:
-            print("*** self.cond_stage_key is " , self.cond_stage_key , ", should be image_cond.\n")
+            # print("*** self.cond_stage_key is " , self.cond_stage_key , ", should be image_cond.\n")
 
             if hasattr(self.cond_stage_model, "decode"): # not using decoder for CLIP
                 xc = self.cond_stage_model.decode(c)
@@ -1795,7 +1795,7 @@ class LatentInpaintDiffusion(LatentDiffusion):
                    plot_diffusion_rows=True, unconditional_guidance_scale=1., unconditional_guidance_label=None,
                    use_ema_scope=True,
                    **kwargs):
-        print("*** log images on LatentInpaintDiffusion \n")
+        # print("*** log images on LatentInpaintDiffusion \n")
         ema_scope = self.ema_scope if use_ema_scope else nullcontext
         use_ddim = ddim_steps is not None
 
@@ -1881,7 +1881,7 @@ class Layout2ImgDiffusion(LatentDiffusion):
         super().__init__(cond_stage_key=cond_stage_key, *args, **kwargs)
 
     def log_images(self, batch, N=8, *args, **kwargs):
-        print("*** log images on Layout2ImgDiffusion \n")
+        # print("*** log images on Layout2ImgDiffusion \n")
         logs = super().log_images(batch=batch, N=N, *args, **kwargs)
 
         key = 'train' if self.training else 'validation'
