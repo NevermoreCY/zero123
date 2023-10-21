@@ -79,13 +79,13 @@ data:
     num_workers: 16
     total_view: 12
     train:
-      valid_path: 'BLIP2_split_by_count_and_grayscale.json'
+      valid_path: 'BLIP2_count_5_13_only_colored.json'
       validation: False
       image_transforms:
         size: 128
 
     validation:
-      valid_path: 'BLIP2_split_by_count_and_grayscale.json'
+      valid_path: 'BLIP2_count_5_13_only_colored.json'
       validation: True
       image_transforms:
         size: 128
