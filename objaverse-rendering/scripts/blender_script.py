@@ -31,11 +31,12 @@ import numpy as np
 
 import bpy
 from mathutils import Vector
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--object_path",
-    type=str,
+    "--job_num",
+    type=int,
     required=True,
     help="Path to the object file",
 )
@@ -262,7 +263,7 @@ def normalize_scene():
     bpy.ops.object.select_all(action="DESELECT")
 
 
-def save_images(object_file: str) -> None:
+def save_images(object_file: str , name) -> None:
     """Saves rendered images of the object in the scene."""
     os.makedirs(args.output_dir, exist_ok=True)
 
@@ -304,6 +305,12 @@ def save_images(object_file: str) -> None:
         RT_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.npy")
         np.save(RT_path, RT)
 
+        # save prompt
+        prompt = name
+        text_path = os.path.join(args.output_dir, object_uid, 'BLIP_best_text_v2.txt')
+        with open(text_path,'w') as f:
+            f.write(prompt)
+
 
 def download_object(object_url: str) -> str:
     """Download the object and return the path."""
@@ -322,17 +329,29 @@ def download_object(object_url: str) -> str:
 
 if __name__ == "__main__":
     try:
-        start_i = time.time()
-        if args.object_path.startswith("http"):
-            local_path = download_object(args.object_path)
-        else:
-            local_path = args.object_path
-        save_images(local_path)
-        end_i = time.time()
-        print("Finished", local_path, "in", end_i - start_i, "seconds")
-        # delete the object if it was downloaded
-        if args.object_path.startswith("http"):
-            os.remove(local_path)
+        # start_i = time.time()
+        # if args.object_path.startswith("http"):
+        #     local_path = download_object(args.object_path)
+        # else:
+        #     local_path = args.object_path
+        job_num = args.job_num
+
+        names = os.listdir('../shapenet/')
+        names.sort()
+
+        cur_names = names[0:2]
+
+        for name in cur_names:
+            local_paths = os.listdir('../shapenet/' + name )
+            for i in tqdm(range(len(local_paths))):
+                local_path = local_paths[i]
+                save_images(local_path , name )
+                # end_i = time.time()
+                # print("Finished", local_path, "in", end_i - start_i, "seconds")
+                # delete the object if it was downloaded
+                if args.object_path.startswith("http"):
+                    os.remove(local_path)
+
     except Exception as e:
         print("Failed to render", args.object_path)
         print(e)
