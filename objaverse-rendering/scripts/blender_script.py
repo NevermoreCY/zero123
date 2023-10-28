@@ -181,6 +181,7 @@ def reset_scene() -> None:
 def load_object(object_path: str) -> None:
     """Loads a glb model into the scene."""
     if object_path.endswith(".glb"):
+        print('object_path :' , object_path)
         bpy.ops.import_scene.gltf(filepath=object_path, merge_vertices=True)
     elif object_path.endswith(".fbx"):
         bpy.ops.import_scene.fbx(filepath=object_path)
