@@ -360,8 +360,8 @@ if __name__ == "__main__":
             print('path ', local_path)
             save_images(local_path, name)
             end_i = time.time()
-
-            print("count: ", c, total, c / total , 'time cost : ' , end_i-stat_t)
+            time_cost = end_i-stat_t
+            print("count: ", c, total, c / total , 'time cost : ' , time_cost , 'time remaining(min) : ' , ((total -c) * time_cost)/60 )
 
             # end_i = time.time()
             # print("Finished", local_path, "in", end_i - start_i, "seconds")
