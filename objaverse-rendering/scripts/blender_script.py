@@ -6,7 +6,7 @@ object around the origin. The images are saved to the output directory.
 
 Example usage:
     blender -b -P blender_script.py -- \
-        --object_path my_object.glb \
+        --job_num my_object.glb \
         --output_dir ./views \
         --engine CYCLES \
         --scale 0.8 \
@@ -31,7 +31,7 @@ import numpy as np
 
 import bpy
 from mathutils import Vector
-from tqdm import tqdm
+# from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -47,7 +47,8 @@ parser.add_argument(
 parser.add_argument("--scale", type=float, default=0.8)
 parser.add_argument("--num_images", type=int, default=8)
 parser.add_argument("--camera_dist", type=int, default=1.2)
-    
+
+
 argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
 
@@ -343,7 +344,7 @@ if __name__ == "__main__":
 
         for name in cur_names:
             local_paths = os.listdir('../shapenet/' + name )
-            for i in tqdm(range(len(local_paths))):
+            for i in range(len(local_paths)):
                 local_path = local_paths[i]
                 save_images(local_path , name )
                 # end_i = time.time()
