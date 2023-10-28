@@ -354,5 +354,5 @@ if __name__ == "__main__":
                 #     os.remove(local_path)
 
     except Exception as e:
-        print("Failed to render", args.object_path)
+        print("Failed to render", name, local_path)
         print(e)
