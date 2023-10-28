@@ -345,6 +345,7 @@ if __name__ == "__main__":
     for name in cur_names:
 
         local_paths = os.listdir('shapenet/' + name)
+        local_paths.sort()
 
         c = 0
         total = len(local_paths)
@@ -357,9 +358,9 @@ if __name__ == "__main__":
             c+=1
 
             local_path = local_paths[i]
-
+            print('*** processing file : ', 'views/' + local_path)
             if os.path.exists('views/' + local_path ):
-                print('skip file : ','views/' + local_path )
+                print('&&& skip file : ','views/' + local_path )
                 continue
             # print('old path ', local_path)
             local_path = 'shapenet/' + name + "/" + local_path
