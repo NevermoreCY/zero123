@@ -332,36 +332,35 @@ if __name__ == "__main__":
 
     name = 0
     local_path = 0
-    try:
+    job_num = args.job_num
+
+    names = os.listdir('shapenet/')
+    names.sort()
+
+    cur_names = names[0:2]
+
+    for name in cur_names:
+
+        local_paths = os.listdir('shapenet/' + name)
+        for i in range(len(local_paths)):
+            local_path = local_paths[i]
+            print('old path ', local_path)
+            local_path = 'shapenet/' + name + "/" + local_path
+            print('path ', local_path)
+            save_images(local_path, name)
+            # end_i = time.time()
+            # print("Finished", local_path, "in", end_i - start_i, "seconds")
+            # delete the object if it was downloaded
+            # if args.object_path.startswith("http"):
+            #     os.remove(local_path)
+    # try:
         # start_i = time.time()
         # if args.object_path.startswith("http"):
         #     local_path = download_object(args.object_path)
         # else:
         #     local_path = args.object_path
-        job_num = args.job_num
-
-        names = os.listdir('shapenet/')
-        names.sort()
-
-        cur_names = names[0:2]
 
 
-        for name in cur_names:
-
-            local_paths = os.listdir('shapenet/' + name )
-            for i in range(len(local_paths)):
-
-                local_path = local_paths[i]
-                print('old path ', local_path)
-                local_path = 'shapenet/' + name + "/"+ local_path
-                print('path ', local_path)
-                save_images(local_path , name )
-                # end_i = time.time()
-                # print("Finished", local_path, "in", end_i - start_i, "seconds")
-                # delete the object if it was downloaded
-                # if args.object_path.startswith("http"):
-                #     os.remove(local_path)
-
-    except Exception as e:
-        print("Failed to render", name, local_path)
-        print(e)
+    # except Exception as e:
+    #     print("Failed to render", name, local_path)
+    #     print(e)
