@@ -340,15 +340,17 @@ if __name__ == "__main__":
         #     local_path = args.object_path
         job_num = args.job_num
 
-        names = os.listdir('../shapenet/')
+        names = os.listdir('shapenet/')
         names.sort()
 
         cur_names = names[0:2]
 
 
         for name in cur_names:
-            local_paths = os.listdir('../shapenet/' + name )
+
+            local_paths = os.listdir('shapenet/' + name )
             for i in range(len(local_paths)):
+
                 local_path = local_paths[i]
                 save_images(local_path , name )
                 # end_i = time.time()
