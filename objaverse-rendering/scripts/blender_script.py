@@ -351,14 +351,16 @@ if __name__ == "__main__":
         for i in range(len(local_paths)):
 
 
-            if os.path.exists('views/' + local_path ):
-                print('skip file : ','views/' + local_path )
-                continue
+
 
             stat_t = time.time()
             c+=1
 
             local_path = local_paths[i]
+
+            if os.path.exists('views/' + local_path ):
+                print('skip file : ','views/' + local_path )
+                continue
             # print('old path ', local_path)
             local_path = 'shapenet/' + name + "/" + local_path
 
