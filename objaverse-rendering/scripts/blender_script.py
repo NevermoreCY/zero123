@@ -337,8 +337,10 @@ if __name__ == "__main__":
 
     names = os.listdir('shapenet/')
     names.sort()
-
-    cur_names = names[0:2]
+    start_id = job_num*2
+    end_id = (job_num+1)*2
+    print("*** start id is ", start_id, 'end id is ', end_id)
+    cur_names = names[start_id:end_id]
 
     for name in cur_names:
 
