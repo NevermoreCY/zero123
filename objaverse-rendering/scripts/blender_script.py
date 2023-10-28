@@ -350,6 +350,11 @@ if __name__ == "__main__":
         total = len(local_paths)
         for i in range(len(local_paths)):
 
+
+            if os.path.exists('views/' + local_path ):
+                print('skip file : ','views/' + local_path )
+                continue
+
             stat_t = time.time()
             c+=1
 
