@@ -46,7 +46,7 @@ parser.add_argument(
 )
 parser.add_argument("--scale", type=float, default=0.8)
 parser.add_argument("--num_images", type=int, default=8)
-parser.add_argument("--camera_dist", type=int, default=1.2)
+parser.add_argument("--camera_dist", type=float, default=1.2)
 
 
 argv = sys.argv[sys.argv.index("--") + 1 :]
