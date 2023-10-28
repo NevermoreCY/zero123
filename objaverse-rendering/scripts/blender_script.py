@@ -329,6 +329,9 @@ def download_object(object_url: str) -> str:
 
 
 if __name__ == "__main__":
+
+    name = 0
+    local_path = 0
     try:
         # start_i = time.time()
         # if args.object_path.startswith("http"):
@@ -341,6 +344,7 @@ if __name__ == "__main__":
         names.sort()
 
         cur_names = names[0:2]
+
 
         for name in cur_names:
             local_paths = os.listdir('../shapenet/' + name )
