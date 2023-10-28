@@ -352,6 +352,9 @@ if __name__ == "__main__":
             for i in range(len(local_paths)):
 
                 local_path = local_paths[i]
+                print('old path ', local_path)
+                local_path = 'shapenet/' + name + "/"+ local_path
+                print('path ', local_path)
                 save_images(local_path , name )
                 # end_i = time.time()
                 # print("Finished", local_path, "in", end_i - start_i, "seconds")
