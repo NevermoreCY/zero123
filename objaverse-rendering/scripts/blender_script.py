@@ -22,7 +22,7 @@ import math
 import os
 import random
 import sys
-# import time
+import time
 import urllib.request
 # import uuid
 from typing import Tuple
@@ -343,12 +343,24 @@ if __name__ == "__main__":
     for name in cur_names:
 
         local_paths = os.listdir('shapenet/' + name)
+
+        c = 0
+        total = len(local_paths)
         for i in range(len(local_paths)):
+
+            stat_t = time.time()
+            c+=1
+
             local_path = local_paths[i]
-            print('old path ', local_path)
+            # print('old path ', local_path)
             local_path = 'shapenet/' + name + "/" + local_path
+
             print('path ', local_path)
             save_images(local_path, name)
+            end_i = time.time()
+
+            print("count: ", c, total, c / total , 'time cost : ' , end_i-stat_t)
+
             # end_i = time.time()
             # print("Finished", local_path, "in", end_i - start_i, "seconds")
             # delete the object if it was downloaded
