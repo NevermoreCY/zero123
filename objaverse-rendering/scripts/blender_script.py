@@ -358,8 +358,9 @@ if __name__ == "__main__":
             c+=1
 
             local_path = local_paths[i]
-            print('*** processing file : ', 'views/' + local_path)
+
             local_name = local_path.split('.')[0]
+            print('*** processing file : ', 'views/' + local_name +'/011.png')
             if os.path.exists('views/' + local_name +'/011.png' ):
                 print('&&& skip file : ','views/' + local_path )
                 continue
