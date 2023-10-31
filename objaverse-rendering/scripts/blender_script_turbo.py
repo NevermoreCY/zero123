@@ -28,7 +28,7 @@ import urllib.request
 from typing import Tuple
 from mathutils import Vector, Matrix
 import numpy as np
-
+import os
 import bpy
 from mathutils import Vector
 # from tqdm import tqdm
@@ -391,9 +391,8 @@ def download_object(object_url: str) -> str:
 if __name__ == "__main__":
 
     # first load the id , we will use name
-    import os
-    import pandas as pd
-    import json
+
+
 
     # Index(['index', 'ID', 'AssetName', 'Artist', 'Keywords', 'GeometryType',
     #        'Polygons', 'Vertices', 'Textures', 'Materials', 'Rigged', 'Animated',
@@ -403,9 +402,9 @@ if __name__ == "__main__":
     #        'Mesh State', 'Material State', 'Notes', 'Kit Version'],
     #       dtype='object')
 
-    full = pd.read_pickle('turbosquid.p')
+    # full = pd.read_pickle('turbosquid.p')
     prefix = 'turbosquid/Commercial-Mammal-withTexture'
-    id_list = os.listdir('Commercial-Mammal-withTexture')
+    id_list = os.listdir(prefix)
     # x = full.loc[full['ID'].isin(id_list)]
     # x = full.loc[full['ID'] == 1420189]
     job_num = args.job_num
@@ -416,8 +415,10 @@ if __name__ == "__main__":
         stat_t = time.time()
         c += 1
         idx = id_list[i]
-        asset_names = full.loc[full['ID'] == int(idx)]
-        asset_name = asset_names['AssetName'].iloc[0]
+        # asset_names = full.loc[full['ID'] == int(idx)]
+        with open(prefix + '/'+ idx + '/' + idx + '.txt' , 'r') as f:
+            name = f.readline()
+        name = name.strip()
 
         print('*** processing file : ', prefix + '/'+ idx + '/' + idx + '.glb')
         if os.path.exists(args.output_dir + '/'+ idx  + '/011.png'):
@@ -427,7 +428,7 @@ if __name__ == "__main__":
         local_path = prefix + '/'+ idx + '/' + idx +'.glb'
 
         print('path ', local_path)
-        save_images(local_path, asset_name)
+        save_images(local_path, name)
         end_i = time.time()
         time_cost = end_i - stat_t
         print("count: ", c, total, c / total, 'time cost : ', time_cost, 'time remaining(min) : ',
