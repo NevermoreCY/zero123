@@ -21,6 +21,7 @@ c = 0
 total = len(id_list)
 for i in range(len(id_list)):
     c += 1
+    print(c)
     idx = id_list[i]
     asset_names = full.loc[full['ID'] == int(idx)]
     asset_name = asset_names['AssetName'].iloc[0]
