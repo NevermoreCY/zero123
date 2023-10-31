@@ -12,7 +12,7 @@ import os
 
 full = pd.read_pickle('turbosquid.p')
 prefix = 'turbosquid/Commercial-Mammal-withTexture'
-id_list = os.listdir('Commercial-Mammal-withTexture')
+id_list = os.listdir(prefix)
 # x = full.loc[full['ID'].isin(id_list)]
 # x = full.loc[full['ID'] == 1420189]
 
