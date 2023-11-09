@@ -342,6 +342,9 @@ if __name__ == "__main__":
     print("*** start id is ", start_id, 'end id is ', end_id)
     cur_names = names[start_id:end_id]
 
+    with open('shapenet_v1_bad.json', 'r') as f:
+        bad_data = json.load(f)
+
     for name in cur_names:
 
         local_paths = os.listdir('shapenet/' + name)
@@ -351,27 +354,28 @@ if __name__ == "__main__":
         total = len(local_paths)
         for i in range(len(local_paths)):
 
-
-
-
             stat_t = time.time()
             c+=1
-
             local_path = local_paths[i]
-
             local_name = local_path.split('.')[0]
-            print('*** processing file : ', 'views/' + local_name +'/011.png')
-            if os.path.exists('views/' + local_name +'/011.png' ):
-                print('&&& skip file : ','views/' + local_path )
-                continue
-            # print('old path ', local_path)
-            local_path = 'shapenet/' + name + "/" + local_path
 
-            print('path ', local_path)
-            save_images(local_path, name)
-            end_i = time.time()
-            time_cost = end_i-stat_t
-            print("count: ", c, total, c / total , 'time cost : ' , time_cost , 'time remaining(min) : ' , ((total -c) * time_cost)/60 )
+            if local_name not in bad_data:
+                print("count: ", c, local_name,'Not a bad data')
+                continue
+
+            else:
+                print('*** processing file : ', 'views/' + local_name +'/011.png')
+                if os.path.exists('views/' + local_name +'/011.png' ):
+                    print('&&& skip file : ','views/' + local_path )
+                    continue
+                # print('old path ', local_path)
+                local_path = 'shapenet/' + name + "/" + local_path
+
+                print('path ', local_path)
+                save_images(local_path, name)
+                end_i = time.time()
+                time_cost = end_i-stat_t
+                print("count: ", c, total, c / total , 'time cost : ' , time_cost , 'time remaining(min) : ' , ((total -c) * time_cost)/60 )
 
             # end_i = time.time()
             # print("Finished", local_path, "in", end_i - start_i, "seconds")
