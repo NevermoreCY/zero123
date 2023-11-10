@@ -341,7 +341,7 @@ if __name__ == "__main__":
     end_id = (job_num+1)*2
     print("*** start id is ", start_id, 'end id is ', end_id)
     cur_names = names[start_id:end_id]
-    view_dir = 'views_shape/'
+    view_dir = './views_shape/'
 
     with open('shapenet_v1_bad.json', 'r') as f:
         bad_data = json.load(f)
@@ -355,11 +355,13 @@ if __name__ == "__main__":
         total = len(local_paths)
         for i in range(len(local_paths)):
 
+
             stat_t = time.time()
             c+=1
             local_path = local_paths[i]
             local_name = local_path.split('.')[0]
 
+            print('*** i is ', i, 'local path is ', local_path )
             if local_name not in bad_data:
                 print("count: ", c, local_name,'Not a bad data')
                 continue
