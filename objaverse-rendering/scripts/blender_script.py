@@ -341,6 +341,7 @@ if __name__ == "__main__":
     end_id = (job_num+1)*2
     print("*** start id is ", start_id, 'end id is ', end_id)
     cur_names = names[start_id:end_id]
+    view_dir = 'views_shape/'
 
     with open('shapenet_v1_bad.json', 'r') as f:
         bad_data = json.load(f)
@@ -364,9 +365,9 @@ if __name__ == "__main__":
                 continue
 
             else:
-                print('*** processing file : ', 'views/' + local_name +'/011.png')
-                if os.path.exists('views/' + local_name +'/011.png' ):
-                    print('&&& skip file : ','views/' + local_path )
+                print('*** processing file : ', view_dir + local_name +'/011.png')
+                if os.path.exists(view_dir + local_name +'/011.png' ):
+                    print('&&& skip file : ',view_dir + local_path )
                     continue
                 # print('old path ', local_path)
                 local_path = 'shapenet/' + name + "/" + local_path
