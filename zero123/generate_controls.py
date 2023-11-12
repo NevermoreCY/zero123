@@ -461,9 +461,12 @@ def main():
     models = dict()
     models['carvekit'] = create_carvekit_interface()
     print('Instantiating StableDiffusionSafetyChecker...')
-
+    from tqdm import tqdm
     folder_list.sort()
-    for folder in folder_list:
+    bad_idx = []
+    for i in tqdm(range(len(folder_list))):
+        print(i)
+        folder = folder_list[i]
 
         image_path = folders + '/' + folder + '/' + '000.png'
         # prompt_path = folders + '/' + folder + '/' + 'BLIP_best_text_v2.txt'
