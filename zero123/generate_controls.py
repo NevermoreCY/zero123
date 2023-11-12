@@ -476,7 +476,7 @@ def main():
         canny_r = canny_r[:, :, None]
         canny_r = np.concatenate([canny_r, canny_r, canny_r], axis=2)
         canny = Image.fromarray(canny_r.astype(np.uint8))
-        out_path = image_path + 'canny' + '.png'
+        out_path = folders + '/' + folder + '/' + 'canny.png'
         canny.save(out_path)
 
 
