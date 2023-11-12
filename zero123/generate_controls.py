@@ -467,7 +467,7 @@ def main():
     with open(good_path,'w') as f:
         json.dump(samples,f)
 
-    for i in tqdm(range(212,len(folder_list))):
+    for i in tqdm(range(196)):
         print(i)
         folder = folder_list[i]
 
