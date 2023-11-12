@@ -463,31 +463,34 @@ def main():
     print('Instantiating StableDiffusionSafetyChecker...')
     from tqdm import tqdm
     folder_list.sort()
-    bad_idx = [196,211,]
-    for i in tqdm(range(212,len(folder_list))):
-        print(i)
-        folder = folder_list[i]
+    samples = folder_list[:196]
+    with open(good_path,'w') as f:
+        json.dump(samples,f)
 
-        image_path = folders + '/' + folder + '/' + '000.png'
-        # prompt_path = folders + '/' + folder + '/' + 'BLIP_best_text_v2.txt'
-        # with open (prompt_path,'r') as f:
-        #     prompt = f.readline()
-
-        # prompt = image_name
-        raw_im = Image.open(image_path)
-        print(image_path)
-
-        raw_im.thumbnail((1536, 1536), Image.Resampling.LANCZOS)
-        input_im = preprocess_image(models, raw_im, True)
-
-        # canny edge process
-        show_in_im1 = (input_im * 255.0).astype(np.uint8)
-        canny_r = random_canny(show_in_im1)
-        canny_r = canny_r[:, :, None]
-        canny_r = np.concatenate([canny_r, canny_r, canny_r], axis=2)
-        canny = Image.fromarray(canny_r.astype(np.uint8))
-        out_path = folders + '/' + folder + '/' + 'canny.png'
-        canny.save(out_path)
+    # for i in tqdm(range(212,len(folder_list))):
+    #     print(i)
+    #     folder = folder_list[i]
+    #
+    #     image_path = folders + '/' + folder + '/' + '000.png'
+    #     # prompt_path = folders + '/' + folder + '/' + 'BLIP_best_text_v2.txt'
+    #     # with open (prompt_path,'r') as f:
+    #     #     prompt = f.readline()
+    #
+    #     # prompt = image_name
+    #     raw_im = Image.open(image_path)
+    #     print(image_path)
+    #
+    #     raw_im.thumbnail((1536, 1536), Image.Resampling.LANCZOS)
+    #     input_im = preprocess_image(models, raw_im, True)
+    #
+    #     # canny edge process
+    #     show_in_im1 = (input_im * 255.0).astype(np.uint8)
+    #     canny_r = random_canny(show_in_im1)
+    #     canny_r = canny_r[:, :, None]
+    #     canny_r = np.concatenate([canny_r, canny_r, canny_r], axis=2)
+    #     canny = Image.fromarray(canny_r.astype(np.uint8))
+    #     out_path = folders + '/' + folder + '/' + 'canny.png'
+    #     canny.save(out_path)
 
 
 if __name__ == '__main__':
