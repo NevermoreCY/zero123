@@ -492,7 +492,7 @@ def main():
         canny = Image.fromarray(canny_r.astype(np.uint8))
         out_path = folders + '/' + folder + '/' + 'canny.png'
         canny.save(out_path)
-        out_path2 = folders + '/' + folder + '/''processed_img.png'
+        out_path2 = folders + '/' + folder + '/'+ 'processed_img.png'
         show_in_im2.save(out_path2)
 
 
