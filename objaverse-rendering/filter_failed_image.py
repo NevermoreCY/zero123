@@ -4,14 +4,11 @@ import cv2
 import numpy as np
 import json
 
-# file_path = 'shapenet_v1_bad.json'
-views_folder = "views_shape"
+
+views_folder = "views_shape_test"
 
 
-# with open(file_path, 'r') as f:
-#     folders = json.load(f)
-
-folders = os.listdir('views_shape')
+folders = os.listdir(views_folder)
 c = 0
 total = len(folders)
 print(total)
@@ -35,7 +32,6 @@ for folder in folders:
             bad_dist[prompt] = 1
         else:
             bad_dist[prompt] += 1
-
         print(c , total ,folder)
         c+=1
     else:
@@ -64,5 +60,6 @@ with open (out_path,'w') as f:
 
 print(c, total, c/total)
 
+print("1071fa4cddb2da2fc8724d5673a063a6", "1071fa4cddb2da2fc8724d5673a063a6" in bad_path)
 
 
