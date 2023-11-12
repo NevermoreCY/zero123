@@ -458,14 +458,17 @@ def main():
     models['carvekit'] = create_carvekit_interface()
     print('Instantiating StableDiffusionSafetyChecker...')
 
+    folder_list.sort()
     for folder in folder_list:
+
         image_path = folders + '/' + folder + '/' + '000.png'
-        prompt_path = folders + '/' + folder + '/' + 'BLIP_best_text_v2.txt'
-        with open (prompt_path,'r') as f:
-            prompt = f.readline()
+        # prompt_path = folders + '/' + folder + '/' + 'BLIP_best_text_v2.txt'
+        # with open (prompt_path,'r') as f:
+        #     prompt = f.readline()
 
         # prompt = image_name
         raw_im = Image.open(image_path)
+        print(image_path)
 
         raw_im.thumbnail((1536, 1536), Image.Resampling.LANCZOS)
         input_im = preprocess_image(models, raw_im, True)
