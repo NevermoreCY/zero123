@@ -463,8 +463,8 @@ def main():
     print('Instantiating StableDiffusionSafetyChecker...')
     from tqdm import tqdm
     folder_list.sort()
-    bad_idx = [196]
-    for i in tqdm(range(197,len(folder_list))):
+    bad_idx = [196,211,]
+    for i in tqdm(range(212,len(folder_list))):
         print(i)
         folder = folder_list[i]
 
