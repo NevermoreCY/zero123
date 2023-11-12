@@ -452,7 +452,11 @@ def main():
     # view_names = ['front', 'left', 'above', 'right', 'below', 'behind']
 
     folders = 'views_shape_test'
-    folder_list = os.listdir(folders)
+    # folder_list = os.listdir(folders)
+    import json
+    good_path = 'shapenet_v2_good.json'
+    with open(good_path, 'r') as f:
+        folder_list = json.load(f)
 
     models = dict()
     models['carvekit'] = create_carvekit_interface()
