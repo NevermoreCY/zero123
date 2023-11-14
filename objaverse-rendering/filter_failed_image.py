@@ -5,7 +5,7 @@ import numpy as np
 import json
 
 
-views_folder = "views_shape_test"
+views_folder = "views_shape"
 
 
 folders = os.listdir(views_folder)
