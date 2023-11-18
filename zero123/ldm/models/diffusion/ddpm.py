@@ -782,6 +782,9 @@ class LatentDiffusion(DDPM):
         control = einops.rearrange(control, 'b h w c -> b c h w')
         control = control.to(memory_format=torch.contiguous_format).float()
 
+
+        print("*** control shape before encode:" ,control.shape)
+
         control_encode = self.encode_first_stage(control)
         control_encode = self.get_first_stage_encoding(control_encode).detach()
         # print("*** control shape after encode:" ,control_encode.shape)
@@ -1065,9 +1068,13 @@ class LatentDiffusion(DDPM):
         x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
         # print("x_noisy shape", x_noisy.shape)
 
-        print("******* parameters before apply model , first cond[c_crossattn]: ", len(cond['c_crossattn']),
-              cond['c_crossattn'][0].shape,
-              'second cond[c_concat]: ', len(cond['c_concat']), cond['c_concat'][0].shape, ' x_noisy: ', x_noisy.shape, 'noise shape:', noise.shape )
+        # print("******* parameters before apply model , first cond[c_crossattn]: ", len(cond['c_crossattn']),
+        #       cond['c_crossattn'][0].shape,
+        #       'second cond[c_concat]: ', len(cond['c_concat']), cond['c_concat'][0].shape, ' x_noisy: ', x_noisy.shape, 'noise shape:', noise.shape )
+        #******* parameters before apply model , first cond[c_crossattn]:  1 torch.Size([192, 77, 768])
+        # second cond[c_concat]:  1 torch.Size([192, 4, 32, 32])
+        # x_noisy:  torch.Size([192, 4, 32, 32]) noise shape: torch.Size([192, 4, 32, 32])
+
 
         model_output = self.apply_model(x_noisy, t, cond)
 
