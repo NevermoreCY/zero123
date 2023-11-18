@@ -1064,6 +1064,11 @@ class LatentDiffusion(DDPM):
         # print("noise shape ", noise.shape)
         x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
         # print("x_noisy shape", x_noisy.shape)
+
+        print("******* parameters before apply model , first cond[c_crossattn]: ", len(cond['c_crossattn']),
+              cond['c_crossattn'][0].shape,
+              'second cond[c_concat]: ', len(cond['c_concat']), cond['c_concat'][0].shape, ' x_noisy: ', x_noisy.shape, 'noise shape:', noise.shape )
+
         model_output = self.apply_model(x_noisy, t, cond)
 
         loss_dict = {}
