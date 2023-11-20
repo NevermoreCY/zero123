@@ -29,37 +29,37 @@ for folder in folders:
     if img.sum() == 328200:
         bad_path.append(folder)
         if prompt not in bad_dist:
-            bad_dist[prompt] = 1
+            bad_dist[prompt] = [folder]
         else:
-            bad_dist[prompt] += 1
+            bad_dist[prompt].append(folder)
         print(c , total ,folder)
         c+=1
     else:
         good_path.append(folder)
         if prompt not in good_dist:
-            good_dist[prompt] = 1
+            good_dist[prompt] = [folder]
         else:
-            good_dist[prompt] += 1
+            good_dist[prompt].append(folder)
 
 
-out_path = 'shapenet_v2_good.json'
+out_path = 'shapenet_v3_good.json'
 with open (out_path,'w') as f:
     json.dump(good_path,f)
 
-out_path = 'shapenet_v2_good_dist.json'
+out_path = 'shapenet_v3_good_dist.json'
 with open (out_path,'w') as f:
     json.dump(good_dist,f)
 
-out_path = 'shapenet_v2_bad.json'
+out_path = 'shapenet_v3_bad.json'
 with open (out_path,'w') as f:
     json.dump(bad_path,f)
 
-out_path = 'shapenet_v2_bad_dist.json'
+out_path = 'shapenet_v3_bad_dist.json'
 with open (out_path,'w') as f:
     json.dump(bad_dist,f)
 
 print(c, total, c/total)
 
-print("1071fa4cddb2da2fc8724d5673a063a6", "1071fa4cddb2da2fc8724d5673a063a6" in bad_path)
+# print("1071fa4cddb2da2fc8724d5673a063a6", "1071fa4cddb2da2fc8724d5673a063a6" in bad_path)
 
 
