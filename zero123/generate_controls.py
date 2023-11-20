@@ -451,12 +451,28 @@ def main():
     # view_list = [front, left, above, right, below, behind]
     # view_names = ['front', 'left', 'above', 'right', 'below', 'behind']
 
+    import json
+    good_j = '/yuch_ws/zero123/objaverse-rendering/shapenet_v3_good_dist.json'
+
+    with open(good_j,'r') as f:
+        good_dict = json.load(f)
+
+    sample_list = []
+    for key in good_dict:
+        sample_list.extend(good_dict[key][:4])
+
+    out= 'good_samples.json'
+    with open(out,'w') as f:
+        json.dump(sample_list,f)
+
+    folder_list = sample_list
+    print(len(folder_list))
     folders = '/yuch_ws/zero123/objaverse-rendering/views_shape'
     # folder_list = os.listdir(folders)
     import json
-    good_path = 'shapenet_v2_good.json'
-    with open(good_path, 'r') as f:
-        folder_list = json.load(f)
+    # good_path = 'shapenet_v2_good.json'
+    # with open(good_path, 'r') as f:
+    #     folder_list = json.load(f)
 
     models = dict()
     models['carvekit'] = create_carvekit_interface()
