@@ -451,7 +451,7 @@ def main():
     # view_list = [front, left, above, right, below, behind]
     # view_names = ['front', 'left', 'above', 'right', 'below', 'behind']
 
-    folders = 'views_shape_test'
+    folders = '/yuch_ws/zero123/objaverse-rendering/views_shape'
     # folder_list = os.listdir(folders)
     import json
     good_path = 'shapenet_v2_good.json'
