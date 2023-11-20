@@ -498,11 +498,11 @@ def main():
         folder = folder_list[i]
 
         image_path = folders + '/' + folder + '/' + '000.png'
-        # prompt_path = folders + '/' + folder + '/' + 'BLIP_best_text_v2.txt'
-        # with open (prompt_path,'r') as f:
-        #     prompt = f.readline()
+        prompt_path = folders + '/' + folder + '/' + 'BLIP_best_text_v2.txt'
+        with open (prompt_path,'r') as f:
+            prompt = f.readline()
 
-        # prompt = image_name
+        print(prompt)
         raw_im = Image.open(image_path)
         print(image_path)
 
