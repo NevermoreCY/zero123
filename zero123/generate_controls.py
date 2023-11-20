@@ -459,7 +459,7 @@ def main():
 
     sample_list = []
 
-    key_list = list(good_dict.key())
+    key_list = list(good_dict.keys())
     key_list.remove('tower')
     print('tower' in key_list)
     key_list.sort()
