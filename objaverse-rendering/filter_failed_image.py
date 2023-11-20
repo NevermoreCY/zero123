@@ -58,6 +58,9 @@ out_path = 'shapenet_v3_bad_dist.json'
 with open (out_path,'w') as f:
     json.dump(bad_dist,f)
 
+for key in good_dist:
+    print(key, len(good_dist[key]))
+
 print(c, total, c/total)
 
 # print("1071fa4cddb2da2fc8724d5673a063a6", "1071fa4cddb2da2fc8724d5673a063a6" in bad_path)
