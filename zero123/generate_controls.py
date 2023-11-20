@@ -463,11 +463,11 @@ def main():
     print('Instantiating StableDiffusionSafetyChecker...')
     from tqdm import tqdm
     folder_list.sort()
-    samples = folder_list[:196]
-    with open(good_path,'w') as f:
-        json.dump(samples,f)
+    # samples = folder_list[:196]
+    # with open(good_path,'w') as f:
+    #     json.dump(samples,f)
 
-    for i in tqdm(range(196)):
+    for i in tqdm(range(len(folder_list))):
         print(i)
         folder = folder_list[i]
 
