@@ -488,7 +488,7 @@ def main():
     models['carvekit'] = create_carvekit_interface()
     print('Instantiating StableDiffusionSafetyChecker...')
     from tqdm import tqdm
-    folder_list.sort()
+    # folder_list.sort()
     # samples = folder_list[:196]
     # with open(good_path,'w') as f:
     #     json.dump(samples,f)
