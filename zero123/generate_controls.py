@@ -458,7 +458,17 @@ def main():
         good_dict = json.load(f)
 
     sample_list = []
+
+    key_list = list(good_dict.key())
+    key_list.remove('tower')
+    print('tower' in key_list)
+    key_list.sort()
     for key in good_dict:
+        good_dict[key].sort()
+
+    for i in range(len(key_list)):
+        key = key_list[i]
+        print(key,'idx is', i*4, (i+1)*4)
         sample_list.extend(good_dict[key][:4])
 
     out= 'good_samples.json'
