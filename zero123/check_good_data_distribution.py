@@ -451,10 +451,11 @@ def main():
     # view_list = [front, left, above, right, below, behind]
     # view_names = ['front', 'left', 'above', 'right', 'below', 'behind']
 
-    folders = '/yuch_ws/zero123/objaverse-rendering/views_shape'
+    # folders = '/yuch_ws/zero123/objaverse-rendering/views_shape'
+    folders = '/yuch_ws/views_release'
     # folder_list = os.listdir(folders)
     import json
-    good_path = 'shapenet_v2_good.json'
+    good_path = 'shapenet_v0_good.json'
     with open(good_path, 'r') as f:
         folder_list = json.load(f)
 
@@ -484,7 +485,7 @@ def main():
         else:
             data_distribution[prompt].append(folder)
 
-    out_path = 'shapenet_good_v2_distributed.json'
+    out_path = 'shapenet_good_v0_distributed.json'
     with open(out_path, 'w' ) as f:
         json.dump(data_distribution,f)
 
