@@ -52,17 +52,17 @@ import os
 #     json.dump(out, f)
 
 # ----------------------fuction 3 ------------------------------------------
-valid_path = "BLIP2_split_by_count.json"
-with open(valid_path, 'r') as f:
-    valid = json.load(f)
-
-total = len(valid["-1"])
-for i in range(14):
-    total += len(valid[str(i)])
-print("total is ", total)
-print("for count ", -1 ," we have ", len( valid[str(-1)]) , ' samples ' ,len( valid[str(-1)])/total * 100, ' percentage.' )
-for i in range(14):
-    print("for count ", i ," we have ", len( valid[str(i)]) , ' samples ' ,len( valid[str(i)])/total * 100, ' percentage.' )
+# valid_path = "BLIP2_split_by_count.json"
+# with open(valid_path, 'r') as f:
+#     valid = json.load(f)
+#
+# total = len(valid["-1"])
+# for i in range(14):
+#     total += len(valid[str(i)])
+# print("total is ", total)
+# print("for count ", -1 ," we have ", len( valid[str(-1)]) , ' samples ' ,len( valid[str(-1)])/total * 100, ' percentage.' )
+# for i in range(14):
+#     print("for count ", i ," we have ", len( valid[str(i)]) , ' samples ' ,len( valid[str(i)])/total * 100, ' percentage.' )
 #
 # for x in range(3,8):
 #     out_path = "valid_paths_" + str(x) +".json"
@@ -74,4 +74,17 @@ for i in range(14):
 #     print(out_path , "total samples are " , len(valid_x), len(valid_x)/ total)
 #     with open(out_path, 'w') as f:
 #         json.dump(valid_x, f)
+
+#---------------------function 4 ------------------------------------
+
+valid_pre = 'valid_paths_'
+for i in range(3,14):
+    valid_path = valid_pre + str(i) + '.json'
+    with open(valid_path, 'r') as f:
+        valid = json.load(f)
+    print(i , len(valid))
+
+
+
+
 
